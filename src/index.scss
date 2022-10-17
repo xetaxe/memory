@@ -10,3 +10,11 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+.AppContainer {
+  display: flex;
+  margin: 0 auto;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}

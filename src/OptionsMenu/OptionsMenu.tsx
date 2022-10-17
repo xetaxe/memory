@@ -1,17 +1,38 @@
 import React from 'react';
-import { OptionsMenuProps} from '../ts/models/OptionsMenu.models';
 import './OptionsMenu.scss';
 
- const OptionsMenu: React.FC<OptionsMenuProps> = ({NumCards, HandleNumCards}) => {
+type difficultyOption = {
+  level: number,
+  numCards: number
+}
+
+type OptionsMenuProps = {
+  difficulty: difficultyOption,
+  difficultyArray: difficultyOption[],
+  onChange: (value: difficultyOption) => void 
+}
+
+
+export default function OptionsMenu({difficulty, difficultyArray, onChange}:OptionsMenuProps) {
+
+  const chooseDifficulty = (value: string) => {
+    let foundDifficulty: difficultyOption | undefined = difficultyArray.find(obj => obj.level === parseInt(value));
+    if(foundDifficulty === undefined) {
+      foundDifficulty = difficultyArray[0];
+    }
+    onChange(foundDifficulty);
+  }
 
   return (
     <div className="OptionsMenu">
       <div>
         Choose the difficulty!
       </div>
-      <input type="range" min="0" max="4" className="NumCardsRange" onInput={HandleNumCards}/>
+      <div>
+      Level: {difficulty.level} <br/>
+      Num. of cards: {difficulty.numCards};
+      </div>
+      <input type="range" min="1" max="5" value={difficulty.level} className="DifRange" onChange={e => chooseDifficulty(e.target.value)}/>
     </div>
   );
 }
-
-export default OptionsMenu;

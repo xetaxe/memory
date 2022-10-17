@@ -1,22 +1,22 @@
 import React, {useEffect, useState} from 'react';
-import './App.scss';
 import OptionsMenu from './OptionsMenu';
-import * as c from './ts/constants/constants';
-import * as t from './ts/types/types';
 
- const App: React.FC = () => {
 
-  const [numCards, setNumCards] = useState<number>(16);
+const difficultyArray: { level: number, numCards: number }[] = [
+  {"level": 1, "numCards": 16}, 
+  {"level": 2, "numCards": 25}, 
+  {"level": 3, "numCards": 36}, 
+  {"level": 4, "numCards": 49}, 
+  {"level": 5, "numCards": 64},
+];
 
-  const handleNumCards = (numCards:number) => setNumCards(c.NUM_CARDS[numCards]);
+let App: React.FC = () => {
 
-  useEffect(() => {
-    console.log(numCards);
-  }, [numCards]);
+  const [difficulty, setDifficulty] = useState(difficultyArray[0]);
 
   return (
     <div className="App">
-      <OptionsMenu NumCards={numCards} HandleNumCards={handleNumCards}/>
+      <OptionsMenu difficulty={difficulty} difficultyArray={difficultyArray} onChange={difOpt => setDifficulty(difOpt)}/>
     </div>
   );
 }
