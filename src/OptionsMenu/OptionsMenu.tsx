@@ -7,13 +7,14 @@ type difficultyOption = {
 }
 
 type OptionsMenuProps = {
+  startGame: boolean,
   difficulty: difficultyOption,
   difficultyArray: difficultyOption[],
   onChange: (value: difficultyOption) => void 
 }
 
 
-export default function OptionsMenu({difficulty, difficultyArray, onChange}:OptionsMenuProps) {
+export default function OptionsMenu({startGame, difficulty, difficultyArray, onChange}:OptionsMenuProps) {
 
   const chooseDifficulty = (value: string) => {
     let foundDifficulty: difficultyOption | undefined = difficultyArray.find(obj => obj.level === parseInt(value));
@@ -24,7 +25,7 @@ export default function OptionsMenu({difficulty, difficultyArray, onChange}:Opti
   }
 
   return (
-    <div className="OptionsMenu">
+    <div className={`OptionsMenu ${startGame ? "hide" : ""}`}>
       <div>
         Choose the difficulty!
       </div>
@@ -33,6 +34,7 @@ export default function OptionsMenu({difficulty, difficultyArray, onChange}:Opti
       Num. of cards: {difficulty.numCards};
       </div>
       <input type="range" min="1" max="5" value={difficulty.level} className="DifRange" onChange={e => chooseDifficulty(e.target.value)}/>
+      <button className="StartGameButton">Start Game!</button>
     </div>
   );
 }

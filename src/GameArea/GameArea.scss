@@ -1,0 +1,20 @@
+.GameArea {
+	display: none;
+	margin: 0 auto;
+	justify-content: center;
+	align-items: center;
+	flex-wrap: wrap;
+	overflow-y: scroll;
+}
+
+.show {
+	display: flex;
+}
+
+.Card {
+	border: 1px solid red;
+	border-radius: 0.5em;
+	padding: 1em 0.5em;
+	font-size: clamp(25px, 3.5em, 40px);
+	min-width: 2.5em;
+}
