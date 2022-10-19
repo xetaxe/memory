@@ -1,5 +1,6 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import './GameArea.scss';
+import { GameStatusContext, IGameStatusContext } from "../App";
 
 const EMOJI_ARRAY: string[] = ["✌","😂","😝","😁","😱","🙌","🍻","🔥","🌈","🌹","😡","🐶","🐬", "👀","🚗","🍎","💝","👌","😍","😉","😓","😳","💪","💩","🎉","🌺","👠","⚾","🏆","👽","💀","🐵","🐮","🐎","💣","👃","🍓","👊","💋","😘","😵","🙏","👋","🚽","💃","💎","🚀","🌙","🎁","⛄","🐰","🐍","🐫","🚲","🍉"]
 
@@ -18,11 +19,10 @@ function Card({cardId}: CardProps) {
 
 
 type GameAreaProps = {
-  startGame: boolean,
   numCards: number
 }
 
-export default function GameArea({startGame, numCards}: GameAreaProps) {
+export default function GameArea({numCards}: GameAreaProps) {
 
   const cards: React.ReactElement[] = [];
 
@@ -30,10 +30,11 @@ export default function GameArea({startGame, numCards}: GameAreaProps) {
       cards.push(<Card cardId={i}/>);
     };
 
+  const useGameContext: IGameStatusContext = useContext(GameStatusContext);
+
   return (
-    <div className={`GameArea ${startGame ? "show" : ""}`}>
+    <div className={`GameArea ${useGameContext.gameStatus === "start" ? "show" : ""}`}>
       {cards}
-      {EMOJI_ARRAY.length}
     </div>
   );
 }

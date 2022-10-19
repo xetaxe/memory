@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, createContext} from 'react';
 import GameArea from './GameArea';
 import OptionsMenu from './OptionsMenu';
 
@@ -11,16 +11,30 @@ const difficultyArray: { level: number, numCards: number }[] = [
   {"level": 5, "numCards": 48},
 ];
 
+const gameStatusArray: string[] = ["define", "start", "pause", "redefine"]
+
+export interface IGameStatusContext {
+  gameStatus?: string,
+  setGameStatus?: (value: string) => void;
+}
+
+export const GameStatusContext = createContext<IGameStatusContext>({});
+
+
 let App: React.FC = () => {
 
   const [difficulty, setDifficulty] = useState(difficultyArray[0]);
-  const [startGame, setStartGame] = useState(false);
+  const [gameStatus, setGameStatus] = useState(gameStatusArray[0]);
+
+  const AppGameStatus: IGameStatusContext = {gameStatus, setGameStatus}
+
+
 
   return (
-    <>
-      <OptionsMenu startGame= {startGame} difficulty={difficulty} difficultyArray={difficultyArray} onChange={difOpt => setDifficulty(difOpt)}/>
-      <GameArea startGame= {startGame} numCards={difficulty.numCards}/>
-    </>
+    <GameStatusContext.Provider value={AppGameStatus}>
+      <OptionsMenu difficulty={difficulty} difficultyArray={difficultyArray} onChange={difOpt => setDifficulty(difOpt)}/>
+      <GameArea numCards={difficulty.numCards}/>
+    </GameStatusContext.Provider>
   );
 }
 

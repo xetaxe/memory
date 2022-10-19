@@ -1,5 +1,6 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import './OptionsMenu.scss';
+import { GameStatusContext, IGameStatusContext } from "../App";
 
 type difficultyOption = {
   level: number,
@@ -7,14 +8,13 @@ type difficultyOption = {
 }
 
 type OptionsMenuProps = {
-  startGame: boolean,
   difficulty: difficultyOption,
   difficultyArray: difficultyOption[],
   onChange: (value: difficultyOption) => void 
 }
 
 
-export default function OptionsMenu({startGame, difficulty, difficultyArray, onChange}:OptionsMenuProps) {
+export default function OptionsMenu({difficulty, difficultyArray, onChange}:OptionsMenuProps) {
 
   const chooseDifficulty = (value: string) => {
     let foundDifficulty: difficultyOption | undefined = difficultyArray.find(obj => obj.level === parseInt(value));
@@ -24,8 +24,12 @@ export default function OptionsMenu({startGame, difficulty, difficultyArray, onC
     onChange(foundDifficulty);
   }
 
+  const useGameContext: IGameStatusContext = useContext(GameStatusContext);
+
+
+
   return (
-    <div className={`OptionsMenu ${startGame ? "hide" : ""}`}>
+    <div className={`OptionsMenu ${useGameContext.gameStatus === "start" ? "hide" : ""}`}>
       <div>
         Choose the difficulty!
       </div>
@@ -34,7 +38,7 @@ export default function OptionsMenu({startGame, difficulty, difficultyArray, onC
       Num. of cards: {difficulty.numCards};
       </div>
       <input type="range" min="1" max="5" value={difficulty.level} className="DifRange" onChange={e => chooseDifficulty(e.target.value)}/>
-      <button className="StartGameButton">Start Game!</button>
+      <button className="StartGameButton" onClick={e => useGameContext.setGameStatus != undefined ? useGameContext.setGameStatus("start") : ""}>Start Game!</button>
     </div>
   );
 }
