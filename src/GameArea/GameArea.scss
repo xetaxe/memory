@@ -1,14 +1,29 @@
 .GameArea {
-	display: none;
+	display: flex;
 	margin: 0 auto;
 	justify-content: center;
 	align-items: center;
 	flex-wrap: wrap;
-	overflow-y: scroll;
 }
 
-.show {
+.CardsArea {
 	display: flex;
+	margin: 0 auto;
+	justify-content: center;
+	align-items: center;
+	flex-wrap: wrap;
+	overflow-y: auto;
+}
+
+.hide {
+	display: none;
+}
+
+.blur {
+	filter: blur(4px);
+	transition: 0.5s filter linear;
+	pointer-events: none;
+	user-select: none;
 }
 
 .Card {
@@ -17,4 +32,17 @@
 	padding: 1em 0.5em;
 	font-size: clamp(25px, 3.5em, 40px);
 	min-width: 2.5em;
+}
+
+.PauseMenu {
+	width: max(100%, 30vp);
+	border: 1px solid black;
+	display: block;
+	filter: none;
+}
+
+.EndMenu {
+	width: max(100%, 30vp);
+	border: 1px solid black;
+	display: block
 }

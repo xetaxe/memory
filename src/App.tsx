@@ -11,7 +11,7 @@ const difficultyArray: { level: number, numCards: number }[] = [
   {"level": 5, "numCards": 48},
 ];
 
-const gameStatusArray: string[] = ["define", "start", "pause", "redefine"]
+const gameStatusArray: string[] = ["define", "play", "pause", "end"]
 
 export interface IGameStatusContext {
   gameStatus?: string,

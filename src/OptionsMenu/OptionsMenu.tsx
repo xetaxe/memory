@@ -29,7 +29,7 @@ export default function OptionsMenu({difficulty, difficultyArray, onChange}:Opti
 
 
   return (
-    <div className={`OptionsMenu ${useGameContext.gameStatus === "start" ? "hide" : ""}`}>
+    <div className={`OptionsMenu ${useGameContext.gameStatus != "define" ? "hide" : ""}`}>
       <div>
         Choose the difficulty!
       </div>
@@ -38,7 +38,7 @@ export default function OptionsMenu({difficulty, difficultyArray, onChange}:Opti
       Num. of cards: {difficulty.numCards};
       </div>
       <input type="range" min="1" max="5" value={difficulty.level} className="DifRange" onChange={e => chooseDifficulty(e.target.value)}/>
-      <button className="StartGameButton" onClick={e => useGameContext.setGameStatus != undefined ? useGameContext.setGameStatus("start") : ""}>Start Game!</button>
+      <button className="StartGameButton" onClick={e => useGameContext.setGameStatus != undefined ? useGameContext.setGameStatus("play") : ""}>Start Game!</button>
     </div>
   );
 }
