@@ -28,8 +28,6 @@ let App: React.FC = () => {
 
   const AppGameStatus: IGameStatusContext = {gameStatus, setGameStatus}
 
-
-
   return (
     <GameStatusContext.Provider value={AppGameStatus}>
       <OptionsMenu difficulty={difficulty} difficultyArray={difficultyArray} onChange={difOpt => setDifficulty(difOpt)}/>

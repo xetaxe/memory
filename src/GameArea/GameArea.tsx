@@ -1,15 +1,17 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, {useState, useEffect, useContext, useMemo, ReactElement} from 'react';
 import './GameArea.scss';
 import { GameStatusContext, IGameStatusContext } from "../App";
+import { createDecipheriv } from 'crypto';
 
 const EMOJI_ARRAY: string[] = ["✌","😂","😝","😁","😱","🙌","🍻","🔥","🌈","🌹","😡","🐶","🐬", "👀","🚗","🍎","💝","👌","😍","😉","😓","😳","💪","💩","🎉","🌺","👠","⚾","🏆","👽","💀","🐵","🐮","🐎","💣","👃","🍓","👊","💋","😘","😵","🙏","👋","🚽","💃","💎","🚀","🌙","🎁","⛄","🐰","🐍","🐫","🚲","🍉"]
 
-const cardStates: string[] = ["hidden", "clicked", "shown"];
+const cardShow: string[] = ["hidden", "clicked", "reveal"];
 
 type CardProps = {
   cardId: number,
   cardContent: string,
-  cardsState: string[]
+  cardReveal: string,
+  revealCard: (cardId: number) => void
 }
 
 type PauseMenuProps = {
@@ -22,10 +24,10 @@ type EndMenuProps = {
 
 
 
-function Card({cardId, cardContent, cardsState}: CardProps) {
-  const cardShowContent = (cardsState[cardId] === cardStates[0] ? "" : {cardContent});
+function Card({cardId, cardContent, cardReveal, revealCard}: CardProps) {
+  const cardShowContent = (cardReveal === cardShow[0] ? "" : cardContent);
   return (
-    <div className="Card">
+    <div className="Card" onClick={(e) => revealCard(cardId)}>
       {cardShowContent}
     </div>
   )
@@ -62,19 +64,39 @@ type GameAreaProps = {
   numCards: number
 }
 
+type CardState = {
+  cardId: number,
+  cardContent: string,
+  cardReveal: string
+}
+
 export default function GameArea({numCards}: GameAreaProps) {
 
-  const cards: React.ReactElement[] = [];
-  const cardsContent: string[] = RandomCardPairs(EMOJI_ARRAY, numCards);
-  const [cardsState, setCardsState] = useState(cardsContent.map(val => "hidden"));
+  let cards: ReactElement[] = [];
+  const [cardsState, setCardsState] = useState<CardState[]>([]);
 
-  console.log(cardsContent);
+  useEffect(() => {
+    const cardsContent: string[] = RandomCardPairs(EMOJI_ARRAY, numCards);
+    setCardsState(cardsContent.map((val, index) => ({cardId:index, cardContent: val, cardReveal: cardShow[0]})));
+  }, [numCards]);
 
-    for(let i:number=0; i<numCards; i++){
-      cards.push(<Card cardId={i} cardContent={cardsContent[i]} cardsState={cardsState}/>);
-    };
+  console.log(cardsState);
+
+  const revealCard = (cardId: number) => {
+    let cardIndex = cardsState.findIndex(card => card.cardId === cardId)
+    let cardsTempState = cardsState;
+    cardsTempState[cardIndex].cardReveal = cardShow[1];
+    setCardsState(cardsTempState);
+  }
+
+  useEffect(() => {
+    cards = cardsState.map(card => ( <Card {...card} revealCard={revealCard}/>));
+    console.log(cards);
+  }, [cardsState]);
 
   const useGameContext: IGameStatusContext = useContext(GameStatusContext);
+
+  cards = cardsState.map(card => ( <Card {...card} revealCard={revealCard}/>));
 
   return (
     <div className={`GameArea 
@@ -93,28 +115,27 @@ export default function GameArea({numCards}: GameAreaProps) {
 }
 
 
+////////Return random emoji pairs logic
 function RandomCardPairs(referenceArray: string[], numCards: number) {
-  const numPairs: number = numCards/2;
-  let randomIndexPairs: number[] = [];
   let randomCardPairs: string[] = [];
-  let generatedPairs: number = 0;
 
-  while (generatedPairs < numPairs) {
-    let randomIndex: number = Math.floor(Math.random() * referenceArray.length)
-    if (randomIndexPairs.find(val => val === randomIndex) === undefined) {
-      randomIndexPairs.push(randomIndex, randomIndex)
-      generatedPairs++;
+  while (randomCardPairs.length < numCards) {
+
+    let randomIndex: number = Math.floor(Math.random() * referenceArray.length);
+    let randomEmoji: string = referenceArray[randomIndex];
+
+    if (randomCardPairs.find(val => val === randomEmoji) === undefined) {
+      randomCardPairs.push(randomEmoji, randomEmoji)
     }
   }
 
-  randomIndexPairs = shuffleArray(randomIndexPairs);
-  randomCardPairs = randomIndexPairs.map(val => referenceArray[val]);
+  randomCardPairs = shuffleArray(randomCardPairs);
 
   return randomCardPairs;
-
 }
 
-function shuffleArray(array: number[]) {
+///////Shuffle array algorithm (Fisher-Yates algorithm)
+function shuffleArray(array: string[]) {
   let currentIndex = array.length,  randomIndex;
   while (currentIndex != 0) {
     // Pick a remaining element.
