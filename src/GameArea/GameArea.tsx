@@ -11,7 +11,7 @@ type CardProps = {
   cardId: number,
   cardContent: string,
   cardReveal: string,
-  revealCard: (cardId: number) => void
+  onClickedCard: (cardId: number) => void
 }
 
 type PauseMenuProps = {
@@ -24,10 +24,10 @@ type EndMenuProps = {
 
 
 
-function Card({cardId, cardContent, cardReveal, revealCard}: CardProps) {
+function Card({cardId, cardContent, cardReveal, onClickedCard}: CardProps) {
   const cardShowContent = (cardReveal === cardShow[0] ? "" : cardContent);
   return (
-    <div className="Card" onClick={(e) => revealCard(cardId)}>
+    <div className="Card" onClick={() => onClickedCard(cardId)}>
       {cardShowContent}
     </div>
   )
@@ -60,8 +60,15 @@ function EndMenu({test}: EndMenuProps) {
 
 ////////////////// WHOLE GAME AREA /////////////////////
 
+type PlayersInfo = { 
+  id: number, 
+  name: string, 
+  score: number 
+}
+
 type GameAreaProps = {
-  numCards: number
+  numCards: number,
+  playersInfo: PlayersInfo[]
 }
 
 type CardState = {
@@ -72,31 +79,35 @@ type CardState = {
 
 export default function GameArea({numCards}: GameAreaProps) {
 
-  let cards: ReactElement[] = [];
+  const useGameContext: IGameStatusContext = useContext(GameStatusContext);
+
   const [cardsState, setCardsState] = useState<CardState[]>([]);
+  const [hola, setHola] = useState<string>("hola");
 
   useEffect(() => {
-    const cardsContent: string[] = RandomCardPairs(EMOJI_ARRAY, numCards);
-    setCardsState(cardsContent.map((val, index) => ({cardId:index, cardContent: val, cardReveal: cardShow[0]})));
+    const fillCardsState: string[] = RandomCardPairs(EMOJI_ARRAY, numCards);
+    setCardsState(fillCardsState.map((val, index) => ({cardId:index, cardContent: val, cardReveal: cardShow[0]})));
   }, [numCards]);
 
-  console.log(cardsState);
+  // console.log(cardsState);
 
-  const revealCard = (cardId: number) => {
-    let cardIndex = cardsState.findIndex(card => card.cardId === cardId)
-    let cardsTempState = cardsState;
-    cardsTempState[cardIndex].cardReveal = cardShow[1];
-    setCardsState(cardsTempState);
-  }
+  const onClickedCard = (cardId: number) => {
+    setCardsState(current =>
+      current.map(card => {
+        if (card.cardId === cardId) {
+          return {...card, cardReveal: 'clicked'};
+        }
+        return card;
+      }),
+    );
+  };
 
-  useEffect(() => {
-    cards = cardsState.map(card => ( <Card {...card} revealCard={revealCard}/>));
+  useEffect (()=> {
+    console.log(cardsState);
     console.log(cards);
   }, [cardsState]);
 
-  const useGameContext: IGameStatusContext = useContext(GameStatusContext);
-
-  cards = cardsState.map(card => ( <Card {...card} revealCard={revealCard}/>));
+  let cards: ReactElement[] = cardsState.map(card => ( <Card {...card} onClickedCard={onClickedCard}/>));
 
   return (
     <div className={`GameArea 
