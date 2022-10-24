@@ -1,7 +1,6 @@
 import React, {useState, useEffect, useContext, useMemo, ReactElement} from 'react';
 import './GameArea.scss';
 import { GameStatusContext, IGameStatusContext } from "../App";
-import { createDecipheriv } from 'crypto';
 
 const EMOJI_ARRAY: string[] = ["✌","😂","😝","😁","😱","🙌","🍻","🔥","🌈","🌹","😡","🐶","🐬", "👀","🚗","🍎","💝","👌","😍","😉","😓","😳","💪","💩","🎉","🌺","👠","⚾","🏆","👽","💀","🐵","🐮","🐎","💣","👃","🍓","👊","💋","😘","😵","🙏","👋","🚽","💃","💎","🚀","🌙","🎁","⛄","🐰","🐍","🐫","🚲","🍉"]
 
@@ -60,15 +59,14 @@ function EndMenu({test}: EndMenuProps) {
 
 ////////////////// WHOLE GAME AREA /////////////////////
 
-type PlayersInfo = { 
+type Player = { 
   id: number, 
-  name: string, 
-  score: number 
+  name: string
 }
 
 type GameAreaProps = {
   numCards: number,
-  playersInfo: PlayersInfo[]
+  players: Player[]
 }
 
 type CardState = {
