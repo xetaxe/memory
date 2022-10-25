@@ -19,14 +19,19 @@ let App: React.FC = () => {
   const [players, setPlayers] = useState([ {"id": 1, "name": "Player 1"}, {"id": 2, "name": "Player 2"}]);
   const [gameStatus, setGameStatus] = useState(gameStatusArray[0]);
 
+  useEffect(() => {
+    console.log("APP:");
+    console.log(players);
+    console.log(level);
+  }, [players, level]);
 
   const optionsMenu =  useMemo(() => {
     return (
       <OptionsMenu 
         level={level}
-        onLevelSelected={(newLevel: { level: number, numCards: number }) => setLevel(newLevel)}
+        updateLevel={(levelUpdate: { level: number, numCards: number }) => setLevel(levelUpdate)}
         players={players}
-        onPlayersUpdated={(playersUpdate: { id: number, name: string }[]) => setPlayers(playersUpdate)}
+        updatePlayers={(playersUpdate: { id: number, name: string }[]) => setPlayers(playersUpdate)}
       />
     );
   }, [level, players]);

@@ -30,38 +30,47 @@ type Player = {
 
 type OptionsMenuProps = {
   level: LevelOption,
-  onLevelSelected: (value: LevelOption) => void,
+  updateLevel: (value: LevelOption) => void,
   players: Player[],
-  onPlayersUpdated: (value: Player[]) => void, 
+  updatePlayers: (value: Player[]) => void, 
 }
 
 
-export default function OptionsMenu({level, onLevelSelected, players, onPlayersUpdated}:OptionsMenuProps) {
+export default function OptionsMenu({level, updateLevel, players, updatePlayers}:OptionsMenuProps) {
 
   const chooseLevel = (newLevel: string) => {
     let foundLevel: LevelOption | undefined = LEVELS_ARRAY.find(elem => elem.level === parseInt(newLevel));
     if(foundLevel === undefined) {
       foundLevel = LEVELS_ARRAY[0];
     }
-    onLevelSelected(foundLevel);
+    updateLevel(foundLevel);
   }
 
   const updateNumPlayers = (currentPlayers: Player[], newNumber: number) => {
     const numPlayers = currentPlayers.length;
-    const updatedPlayers = currentPlayers;
-    if(updatedPlayers.length > newNumber) {
-      updatedPlayers.slice(0, newNumber);
+    const updatedPlayers = currentPlayers.slice();
+    if(numPlayers > newNumber) {
+      updatedPlayers.splice(newNumber);
     } else {
       for(let i=numPlayers; i<newNumber; i++){
         updatedPlayers.push(DEFAULT_PLAYERS[i]);
       }
     }
-    console.log(updatedPlayers)
-    onPlayersUpdated(updatedPlayers);
+    updatePlayers(updatedPlayers);
   }
 
-  const updateNamePlayers = (currentPlayers: Player[], newNumber: number) => {
-
+  const updateNamePlayers = (players: Player[], playerToRename: Player, newName: string) => {
+    if(newName.length < 2)
+      return
+    console.log("hola");
+    updatePlayers(
+      players.map(player =>{
+        if (player.id === playerToRename.id) {
+          return {...player, name: newName}
+        }
+        return player;
+      })
+    );
   }
 
   const useGameContext: IGameStatusContext = useContext(GameStatusContext);
@@ -69,7 +78,7 @@ export default function OptionsMenu({level, onLevelSelected, players, onPlayersU
 
 
   return (
-    <div className={`OptionsMenu ${useGameContext.gameStatus != "define" ? "hide" : ""}`}>
+    <div className={`OptionsMenu ${useGameContext.gameStatus !== "define" ? "hide" : ""}`}>
       <div>
         Choose the difficulty!
       </div>
@@ -77,15 +86,47 @@ export default function OptionsMenu({level, onLevelSelected, players, onPlayersU
       Level: {level.level} <br/>
       Num. of cards: {level.numCards};
       </div>
-      <input type="range" min="1" max="5" value={level.level} className="DifRange" onChange={e => chooseLevel(e.target.value)}/>
+      <input type="range" min="1" max="5" value={level.level} className="DifRange" onChange={e => {e.preventDefault(); chooseLevel(e.target.value)}}/>
       <div>
       Number of Players: {players.length} <br/>
       <button className="ButtonNumPlayers" onClick={e => updateNumPlayers(players, 2)}>2</button>
       <button className="ButtonNumPlayers" onClick={e => updateNumPlayers(players, 3)}>3</button>
-      <button className="ButtonNumPlayers" onClick={e => updateNumPlayers(players, 4)}>4</button>
-      Players: {players.map(player => player.name)}
+      <button className="ButtonNumPlayers" onClick={e => updateNumPlayers(players, 4)}>4</button><br/>
+      <ul className="NamePlayers">
+        Click to edit the names!
+        {players.map(player => (<li>
+            <tr>
+              <td>Player {player.id}</td>
+              <td>
+                Name:
+                  <input type="text" defaultValue= {player.name}
+                    onBlur={
+                      e => {
+                        if(e.currentTarget.value.length < 2){
+                          e.target.value = player.name;
+                          return;
+                        }
+                        updateNamePlayers(players, player, e.currentTarget.value)
+                      }
+                    }
+                    onKeyPress={
+                      e => {
+                        if (e.key === "Enter") {
+                          e.currentTarget.blur()
+                          updateNamePlayers(players, player, e.currentTarget.value)
+                        }
+                        if (e.key === "Tab") {
+                          updateNamePlayers(players, player, e.currentTarget.value)
+                        }
+                      }
+                    } 
+                  /> 
+              </td>
+            </tr>
+          </li>))}
+      </ul>
       </div>
-      <button className="StartGameButton" onClick={e => useGameContext.setGameStatus != undefined ? useGameContext.setGameStatus("play") : ""}>Start Game!</button>
+      <button className="StartGameButton" onClick={e => useGameContext.setGameStatus !== undefined ? useGameContext.setGameStatus("play") : ""}>Start Game!</button>
     </div>
   );
 }

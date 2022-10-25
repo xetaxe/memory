@@ -101,8 +101,8 @@ export default function GameArea({numCards}: GameAreaProps) {
   };
 
   useEffect (()=> {
-    console.log(cardsState);
-    console.log(cards);
+    // console.log(cardsState);
+    // console.log(cards);
   }, [cardsState]);
 
   let cards: ReactElement[] = cardsState.map(card => ( <Card {...card} onClickedCard={onClickedCard}/>));
