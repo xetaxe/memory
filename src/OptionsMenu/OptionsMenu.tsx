@@ -60,6 +60,7 @@ export default function OptionsMenu({level, updateLevel, players, updatePlayers}
   }
 
   const updateNamePlayers = (players: Player[], playerToRename: Player, newName: string) => {
+    //Name validations here
     if(newName.length < 2)
       return
     console.log("hola");
@@ -95,34 +96,27 @@ export default function OptionsMenu({level, updateLevel, players, updatePlayers}
       <ul className="NamePlayers">
         Click to edit the names!
         {players.map(player => (<li>
-            <tr>
-              <td>Player {player.id}</td>
-              <td>
-                Name:
-                  <input type="text" defaultValue= {player.name}
-                    onBlur={
-                      e => {
-                        if(e.currentTarget.value.length < 2){
-                          e.target.value = player.name;
-                          return;
-                        }
-                        updateNamePlayers(players, player, e.currentTarget.value)
-                      }
+            <div> Player {player.id}</div>
+            <div> Name: 
+              <input type="text" defaultValue= {player.name}
+                onBlur={ e => {
+                  if(e.currentTarget.value.length < 2){
+                    e.target.value = player.name;
+                    return;
+                  }
+                  updateNamePlayers(players, player, e.currentTarget.value)
+                } }
+                onKeyPress={ e => {
+                    if (e.key === "Enter" || e.key === "Tab") {
+                      e.currentTarget.blur()
+                      updateNamePlayers(players, player, e.currentTarget.value)
                     }
-                    onKeyPress={
-                      e => {
-                        if (e.key === "Enter") {
-                          e.currentTarget.blur()
-                          updateNamePlayers(players, player, e.currentTarget.value)
-                        }
-                        if (e.key === "Tab") {
-                          updateNamePlayers(players, player, e.currentTarget.value)
-                        }
-                      }
-                    } 
-                  /> 
-              </td>
-            </tr>
+                    // if (e.key === "Tab") {
+                    //   updateNamePlayers(players, player, e.currentTarget.value)
+                    // }
+                } } 
+              /> 
+            </div>
           </li>))}
       </ul>
       </div>

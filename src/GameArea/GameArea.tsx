@@ -75,28 +75,82 @@ type CardState = {
   cardReveal: string
 }
 
-export default function GameArea({numCards}: GameAreaProps) {
+type PlayerScore = {
+  id: number,
+  name: string,
+  score: number
+}
+
+export default function GameArea({numCards, players}: GameAreaProps) {
 
   const useGameContext: IGameStatusContext = useContext(GameStatusContext);
 
   const [cardsState, setCardsState] = useState<CardState[]>([]);
-  const [hola, setHola] = useState<string>("hola");
+  const [gameScores, setGameScores] = useState<PlayerScore[]>([]);
+  const [turn, setTurn] = useState<number>(1);
 
   useEffect(() => {
     const fillCardsState: string[] = RandomCardPairs(EMOJI_ARRAY, numCards);
     setCardsState(fillCardsState.map((val, index) => ({cardId:index, cardContent: val, cardReveal: cardShow[0]})));
   }, [numCards]);
 
+  useEffect(() => {
+    const fillGameScores: PlayerScore[] = players.map((player) => ({...player, score: 0}));
+    setGameScores(fillGameScores);
+  }, [players]);
+
+  //Update clicked cards
+  useEffect(() => {
+    const foundCards: CardState[] = [];
+    for (let i=0; i<cardsState.length; i++){
+      if (cardsState[i].cardReveal === cardShow[1]) 
+        foundCards.push(cardsState[i]);
+    }
+    if (foundCards.length === 2){
+      if (foundCards[0].cardContent === foundCards[1].cardContent){
+        setCardsState(current =>
+          current.map(card => {
+            if (card.cardId === foundCards[0].cardId || card.cardId === foundCards[0].cardId) {
+              return {...card, cardReveal: cardShow[2]};
+            }
+            return card;
+          }),
+        );
+      } else {
+        setCardsState(current =>
+          current.map(card => {
+            if (card.cardId === foundCards[0].cardId || card.cardId === foundCards[0].cardId) {
+              return {...card, cardReveal: cardShow[0]};
+            }
+            return card;
+          }),
+        );
+      }
+    }
+  }, [cardsState]);
+
   // console.log(cardsState);
 
   const onClickedCard = (cardId: number) => {
+    const firstClick: CardState | undefined = cardsState.find(card => {if (card.cardReveal === cardShow[1]) return card});
+    if (firstClick === undefined){
+      setCardsState(current =>
+        current.map(card => {
+          if (card.cardId === cardId) {
+            return {...card, cardReveal: 'clicked'};
+          }
+          return card;
+        }),
+      );
+    }
+    const findSameCard: CardState | undefined = cardsState.find(card => {if (card.cardId != cardId && card.cardReveal === cardShow[1]) return card})
     setCardsState(current =>
       current.map(card => {
         if (card.cardId === cardId) {
           return {...card, cardReveal: 'clicked'};
         }
         return card;
-      }),
+      })
     );
   };
 
@@ -117,8 +171,14 @@ export default function GameArea({numCards}: GameAreaProps) {
       </div>
       <button className="PauseGameButton" onClick={e => useGameContext.setGameStatus != undefined ? useGameContext.setGameStatus("pause") : ""}>Pause Game</button>
       <button className="EndGameButton" onClick={e => useGameContext.setGameStatus != undefined ? useGameContext.setGameStatus("end") : ""}>End Game</button>
-    <PauseMenu test="test"></PauseMenu>
-    <EndMenu test="test"></EndMenu>
+      <PauseMenu test="test"></PauseMenu>
+      <EndMenu test="test"></EndMenu>
+      <div>It is {players.map(player => (player.id === turn ? <span>{player.name}</span> : ""))} turn!</div>
+      <div>Scores: 
+        <ul>
+          {gameScores.map(player => <li>{player.score}</li>)}
+        </ul>
+      </div>
     </div>
   );
 }
