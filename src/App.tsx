@@ -43,7 +43,7 @@ let App: React.FC = () => {
         players={players}
       />
     )
-  }, [level, players])
+  }, [level, players, gameStatus])
 
   const AppGameStatus: IGameStatusContext = {gameStatus, setGameStatus}
 

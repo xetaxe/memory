@@ -87,17 +87,32 @@ export default function GameArea({numCards, players}: GameAreaProps) {
 
   const [cardsState, setCardsState] = useState<CardState[]>([]);
   const [gameScores, setGameScores] = useState<PlayerScore[]>([]);
-  const [turn, setTurn] = useState<number>(1);
+  const [turn, setTurn] = useState<number>(0);
 
   useEffect(() => {
+    if(useGameContext.gameStatus !== "define") return undefined;
     const fillCardsState: string[] = RandomCardPairs(EMOJI_ARRAY, numCards);
     setCardsState(fillCardsState.map((val, index) => ({cardId:index, cardContent: val, cardReveal: cardShow[0]})));
-  }, [numCards]);
+  }, [numCards, useGameContext.gameStatus]);
 
   useEffect(() => {
+    if(useGameContext.gameStatus !== "define") return undefined;
     const fillGameScores: PlayerScore[] = players.map((player) => ({...player, score: 0}));
     setGameScores(fillGameScores);
-  }, [players]);
+  }, [players, useGameContext.gameStatus]);
+
+  //Game ended?
+  useEffect(() => {
+    let totalCardsRevealed: number = 0;
+    for(let i=0; i<gameScores.length; i++){
+      totalCardsRevealed += gameScores[i].score;
+    }
+    //YES
+    if (totalCardsRevealed === (numCards / 2)) {
+      if (useGameContext.setGameStatus != undefined) 
+      useGameContext.setGameStatus("end");
+    }
+  }, [gameScores])
 
   //Update clicked cards
   useEffect(() => {
@@ -106,30 +121,41 @@ export default function GameArea({numCards, players}: GameAreaProps) {
       if (cardsState[i].cardReveal === cardShow[1]) 
         foundCards.push(cardsState[i]);
     }
+    console.log(foundCards);
     if (foundCards.length === 2){
-      if (foundCards[0].cardContent === foundCards[1].cardContent){
-        setCardsState(current =>
-          current.map(card => {
-            if (card.cardId === foundCards[0].cardId || card.cardId === foundCards[0].cardId) {
-              return {...card, cardReveal: cardShow[2]};
-            }
-            return card;
-          }),
-        );
-      } else {
-        setCardsState(current =>
-          current.map(card => {
-            if (card.cardId === foundCards[0].cardId || card.cardId === foundCards[0].cardId) {
-              return {...card, cardReveal: cardShow[0]};
-            }
-            return card;
-          }),
-        );
-      }
+      setTimeout( () => {
+        if (foundCards[0].cardContent === foundCards[1].cardContent){
+          setCardsState(current =>
+            current.map(card => {
+              if (card.cardId === foundCards[0].cardId || card.cardId === foundCards[1].cardId) {
+                return {...card, cardReveal: cardShow[2]};
+              }
+              return card;
+            }),
+          );
+          setGameScores(current =>
+            current.map(player => {
+              if (player.id === (turn + 1)) {
+                return {...player, score: player.score++};
+              }
+              return player;
+            }),
+          );
+        } else {
+          setCardsState(current =>
+            current.map(card => {
+              if (card.cardId === foundCards[0].cardId || card.cardId === foundCards[1].cardId) {
+                return {...card, cardReveal: cardShow[0]};
+              }
+              return card;
+            }),
+          );
+          setTurn(prev => ((prev + 1) % players.length))
+        }
+      }, 1000)
     }
   }, [cardsState]);
 
-  // console.log(cardsState);
 
   const onClickedCard = (cardId: number) => {
     const firstClick: CardState | undefined = cardsState.find(card => {if (card.cardReveal === cardShow[1]) return card});
@@ -143,7 +169,7 @@ export default function GameArea({numCards, players}: GameAreaProps) {
         }),
       );
     }
-    const findSameCard: CardState | undefined = cardsState.find(card => {if (card.cardId != cardId && card.cardReveal === cardShow[1]) return card})
+    const findSameCard: CardState | undefined = cardsState.find(card => {if (card.cardId !== cardId && card.cardReveal === cardShow[1]) return card})
     setCardsState(current =>
       current.map(card => {
         if (card.cardId === cardId) {
@@ -153,11 +179,6 @@ export default function GameArea({numCards, players}: GameAreaProps) {
       })
     );
   };
-
-  useEffect (()=> {
-    // console.log(cardsState);
-    // console.log(cards);
-  }, [cardsState]);
 
   let cards: ReactElement[] = cardsState.map(card => ( <Card {...card} onClickedCard={onClickedCard}/>));
 
@@ -169,14 +190,14 @@ export default function GameArea({numCards, players}: GameAreaProps) {
                   ${useGameContext.gameStatus === "end" ? "blur" : ""}`}>
         {cards}
       </div>
-      <button className="PauseGameButton" onClick={e => useGameContext.setGameStatus != undefined ? useGameContext.setGameStatus("pause") : ""}>Pause Game</button>
-      <button className="EndGameButton" onClick={e => useGameContext.setGameStatus != undefined ? useGameContext.setGameStatus("end") : ""}>End Game</button>
+      <button className="PauseGameButton" onClick={e => useGameContext.setGameStatus !== undefined ? useGameContext.setGameStatus("pause") : ""}>Pause Game</button>
+      {/* <button className="EndGameButton" onClick={e => useGameContext.setGameStatus !== undefined ? useGameContext.setGameStatus("end") : ""}>End Game</button> */}
       <PauseMenu test="test"></PauseMenu>
       <EndMenu test="test"></EndMenu>
-      <div>It is {players.map(player => (player.id === turn ? <span>{player.name}</span> : ""))} turn!</div>
+      <div>It is {players.map(player => (player.id === (turn + 1) ? <span>{player.name}</span> : ""))} turn!</div>
       <div>Scores: 
         <ul>
-          {gameScores.map(player => <li>{player.score}</li>)}
+          {gameScores.map(player => <li>{player.name}: {player.score}</li>)}
         </ul>
       </div>
     </div>
