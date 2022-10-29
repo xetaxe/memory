@@ -93,12 +93,12 @@ export default function OptionsMenu({level, updateLevel, players, updatePlayers}
       <button className="ButtonNumPlayers" onClick={e => updateNumPlayers(players, 2)}>2</button>
       <button className="ButtonNumPlayers" onClick={e => updateNumPlayers(players, 3)}>3</button>
       <button className="ButtonNumPlayers" onClick={e => updateNumPlayers(players, 4)}>4</button><br/>
-      <ul className="NamePlayers">
+      <ul className="ListPlayers">
         Click to edit the names!
-        {players.map(player => (<li>
-            <div> Player {player.id}</div>
+        {players.map(player => (<li className="Player"> 
+            <div className="PlayerId"> #{player.id}🧑</div>
             <div> Name: 
-              <input type="text" defaultValue= {player.name}
+              <input className="PlayerName" type="text" defaultValue= {player.name}
                 onBlur={ e => {
                   if(e.currentTarget.value.length < 2){
                     e.target.value = player.name;
@@ -111,9 +111,6 @@ export default function OptionsMenu({level, updateLevel, players, updatePlayers}
                       e.currentTarget.blur()
                       updateNamePlayers(players, player, e.currentTarget.value)
                     }
-                    // if (e.key === "Tab") {
-                    //   updateNamePlayers(players, player, e.currentTarget.value)
-                    // }
                 } } 
               /> 
             </div>

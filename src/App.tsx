@@ -21,8 +21,6 @@ let App: React.FC = () => {
 
   useEffect(() => {
     console.log("APP:");
-    console.log(players);
-    console.log(level);
   }, [players, level]);
 
   const optionsMenu =  useMemo(() => {
