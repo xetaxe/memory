@@ -1,0 +1,40 @@
+///////////** VARIABLES **//////////////////
+
+//FONTS
+$web-title-font: -apple-system, BlinkMacSystemFont;
+$primary-font: -apple-system, BlinkMacSystemFont;
+$secondary-font: -apple-system, BlinkMacSystemFont;
+
+//COLORS
+$primary-color: green;
+$secondary-color: red;
+$spicy-color: yellow;
+
+
+
+//////////////** RESPONSIVE **////////////////
+@mixin phone-only {
+	@media (max-width: 599px) { @content; }
+}
+@mixin tablet-portrait-up {
+	@media (min-width: 600px) { @content; }
+}
+@mixin tablet-landscape-up {
+	@media (min-width: 900px) { @content; }
+}
+@mixin desktop-up {
+	@media (min-width: 1200px) { @content; }
+}
+@mixin big-desktop-up {
+	@media (min-width: 1800px) { @content; }
+}
+
+
+
+///////////////** OTHER MIXINS **////////////////
+@mixin typical-flexi {  
+	display: flex;
+	margin: 0 auto;
+	justify-content: center;
+	align-items: center;
+}

@@ -1,3 +1,5 @@
+@import "vars_and_mixins";
+
 * {
   box-sizing: border-box;
 }
@@ -12,11 +14,12 @@ body {
 }
 
 .AppContainer {
-  display: flex;
-  margin: 0 auto;
-  justify-content: center;
-  align-items: center;
+  @include typical-flexi;
   min-height: 100vh;
   flex-direction: column;
+}
+
+.WebTitle {
+  font-family: $web-title-font;
 }
 

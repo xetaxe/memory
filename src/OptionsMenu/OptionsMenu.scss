@@ -1,7 +1,9 @@
+@import "../vars_and_mixins";
+
 .OptionsMenu {
 	width: max(100%, 30vp);
 	border: 1px solid black;
-	display: block
+	display: block;
 }
 
 .hide {

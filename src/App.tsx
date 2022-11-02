@@ -47,7 +47,7 @@ let App: React.FC = () => {
 
   return (
     <GameStatusContext.Provider value={AppGameStatus}>
-      <h1> EPIC MEMORY </h1>
+      <h1 className="WebTitle"> EPIC MEMORY </h1>
       {optionsMenu}
       {gameArea}
     </GameStatusContext.Provider>
