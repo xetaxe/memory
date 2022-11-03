@@ -1,13 +1,41 @@
 @import "../vars_and_mixins";
 
-.OptionsMenu {
-	width: max(100%, 30vp);
-	border: 1px solid black;
-	display: block;
-}
-
 .hide {
 	display: none;
+}
+
+.optionsmenu {
+	width: min(96%, 600px);
+	border: 2px solid hsl(100, 56%, 31%);
+	border-radius: min(2.5vw, 15px);
+	background-color: hsl(340, 0%, 30%);
+	display: flex;
+	flex-direction: column;
+	padding: 2vw;
+	color: hsl(150, 20%, 95%);
+	font-size: clamp(1.2rem, 4vw, 1.5rem)
+}
+
+.difficultyoptions {
+	@include typical-flexi;
+	flex-wrap: wrap;
+	flex-direction: row;
+	
+
+	&__title {
+		width: 100%;
+		border: 1px solid black;
+	}
+
+	&__selector {
+		width: 50%;
+		border: 1px solid black;
+	}
+
+	&__info {
+		width: 50%;
+		border: 1px solid black;
+	}
 }
 
 .StartGameButton {

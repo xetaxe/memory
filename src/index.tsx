@@ -7,7 +7,7 @@ const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
-  <div className='AppContainer'>
+  <div className='appcontainer'>
     <React.StrictMode>
       <App />
     </React.StrictMode>

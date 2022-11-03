@@ -79,15 +79,18 @@ export default function OptionsMenu({level, updateLevel, players, updatePlayers}
 
 
   return (
-    <div className={`OptionsMenu ${useGameContext.gameStatus !== "define" ? "hide" : ""}`}>
-      <div>
+    <div className={`optionsmenu ${useGameContext.gameStatus !== "define" ? "hide" : ""}`}>
+      <div className="difficultyoptions"></div>
+      <div className="difficultyoptions__title">
         Choose the difficulty!
       </div>
-      <div>
+      <div className='difficultyoptions__selector'>
+        <input type="range" min="1" max="5" value={level.level} className="DifRange" onChange={e => {e.preventDefault(); chooseLevel(e.target.value)}}/>
+      </div>
+      <div className='difficultyoptions__info'>
       Level: {level.level} <br/>
       Num. of cards: {level.numCards};
       </div>
-      <input type="range" min="1" max="5" value={level.level} className="DifRange" onChange={e => {e.preventDefault(); chooseLevel(e.target.value)}}/>
       <div>
       Number of Players: {players.length} <br/>
       <button className="ButtonNumPlayers" onClick={e => updateNumPlayers(players, 2)}>2</button>
