@@ -17,11 +17,15 @@ body {
   @include typical-flexi;
   min-height: 100vh;
   flex-direction: column;
-  background-image: linear-gradient(to bottom right, hsl(60, 56%, 91%), hsl(60, 56%, 76%))
+  background-image: linear-gradient(to bottom right, hsl(60, 56%, 91%), hsl(60, 56%, 72%))
 }
 
 .webtitle {
   font-family: $web-title-font;
-  font-size: min(4.5rem, 10vw);
+  font-size: min(5rem, 10vw);
+}
+
+.webtitle--reduced {
+  font-size: min(5rem, 10vw);
 }
 

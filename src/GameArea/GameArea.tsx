@@ -14,11 +14,11 @@ type CardProps = {
 }
 
 type PauseMenuProps = {
-  test: string
+  gameScores: PlayerScore[]
 }
 
 type EndMenuProps = {
-  test: string
+  gameScores: PlayerScore[]
 }
 
 
@@ -33,25 +33,46 @@ function Card({cardId, cardContent, cardReveal, onClickedCard}: CardProps) {
 }
 
 
-function PauseMenu({test}: PauseMenuProps) {
+function PauseMenu({gameScores}: PauseMenuProps) {
 
   const useGameContext: IGameStatusContext = useContext(GameStatusContext);
 
   return (
-    <div className={`PauseMenu ${useGameContext.gameStatus != "pause" ? "hide" : ""}`}>
-      <button className="ResumeGameButton" onClick={e => useGameContext.setGameStatus != undefined ? useGameContext.setGameStatus("play") : ""}>Resume Game</button>
+    <div className={`pausemenu ${useGameContext.gameStatus !== "pause" ? "hide" : ""}`}>
+      <div>Scores: 
+        <ul>
+          {gameScores.map(player => <li>{player.name}: {player.score}</li>)}
+        </ul>
+      </div>
+      <button className="pausemenu__resumebutton" onClick={e => useGameContext.setGameStatus != undefined ? useGameContext.setGameStatus("play") : ""}>Resume Game</button>
+    </div>
+  )
+}
+
+function RestartMenu() {
+  const useGameContext: IGameStatusContext = useContext(GameStatusContext);
+  return (
+    <div className={`restartmenu ${useGameContext.gameStatus !== "restart" ? "hide" : ""}`}>
+      <div className="restartmenu__title">Are you sure you want to restart the game?</div>
+      <button className="restartmenu__resumebutton" onClick={e => useGameContext.setGameStatus != undefined ? useGameContext.setGameStatus("play") : ""}>Resume Game</button>
+      <button className="restartmenu__restartbutton" onClick={e => useGameContext.setGameStatus != undefined ? useGameContext.setGameStatus("define") : ""}>Restart Game</button>
     </div>
   )
 }
 
 
-function EndMenu({test}: EndMenuProps) {
+function EndMenu({gameScores}: EndMenuProps) {
   
   const useGameContext: IGameStatusContext = useContext(GameStatusContext);
 
   return (
-    <div className={`EndMenu ${useGameContext.gameStatus != "end" ? "hide" : ""}`}>
-      <button className="RestartGameButton" onClick={e => useGameContext.setGameStatus != undefined ? useGameContext.setGameStatus("define") : ""}>Restart Game</button>
+    <div className={`endmenu ${useGameContext.gameStatus !== "end" ? "hide" : ""}`}>
+      <div>Scores: 
+        <ul>
+          {gameScores.map(player => <li>{player.name}: {player.score}</li>)}
+        </ul>
+      </div>
+      <button className="endmenu__restartbutton" onClick={e => useGameContext.setGameStatus != undefined ? useGameContext.setGameStatus("define") : ""}>Restart Game</button>
     </div>
   )
 }
@@ -183,24 +204,29 @@ export default function GameArea({numCards, players}: GameAreaProps) {
   let cards: ReactElement[] = cardsState.map(card => ( <Card {...card} onClickedCard={onClickedCard}/>));
 
   return (
-    <div className={`GameArea 
-                  ${useGameContext.gameStatus === "define" ? "hide" : ""}`}>
-      <div className={`CardsArea 
-                  ${useGameContext.gameStatus === "pause" ? "blur" : ""}
-                  ${useGameContext.gameStatus === "end" ? "blur" : ""}`}>
-        {cards}
+    <>
+      <div className={`gamearea 
+                    ${useGameContext.gameStatus !== "play" ? "blur" : ""}
+                    ${useGameContext.gameStatus === "define" ? "hide" : ""}`}>
+        <div className="cardsarea">
+          {cards}
+        </div>
+        <div className="infoarea">
+          {/* <button className="infoarea__pausegame" onClick={e => useGameContext.setGameStatus !== undefined ? useGameContext.setGameStatus("pause") : ""}><svg xmlns="http://www.w3.org/2000/svg" height="48" width="48"><path d="M28.25 38V10H36v28ZM12 38V10h7.75v28Z"/></svg></button> */}
+          <button className="infoarea__pausegame" onClick={e => useGameContext.setGameStatus !== undefined ? useGameContext.setGameStatus("pause") : ""}><svg xmlns="http://www.w3.org/2000/svg" height="48" width="48"><path d="M28.25 38V10H36v28ZM12 38V10h7.75v28Z"/></svg></button>
+          <button className="infoarea__restartgame" onClick={e => useGameContext.setGameStatus !== undefined ? useGameContext.setGameStatus("restart") : ""}><svg xmlns="http://www.w3.org/2000/svg" height="48" width="48"><path d="M24 40q-6.65 0-11.325-4.675Q8 30.65 8 24q0-6.65 4.675-11.325Q17.35 8 24 8q4.25 0 7.45 1.725T37 14.45V8h3v12.7H27.3v-3h8.4q-1.9-3-4.85-4.85Q27.9 11 24 11q-5.45 0-9.225 3.775Q11 18.55 11 24q0 5.45 3.775 9.225Q18.55 37 24 37q4.15 0 7.6-2.375 3.45-2.375 4.8-6.275h3.1q-1.45 5.25-5.75 8.45Q29.45 40 24 40Z"/></svg></button>
+          <div>It is {players.map(player => (player.id === (turn + 1) ? <span>{player.name}</span> : ""))} turn!</div>
+          <div>Scores: 
+            <ul>
+              {gameScores.map(player => <li>{player.name}: {player.score}</li>)}
+            </ul>
+          </div>
+        </div>
       </div>
-      <button className="PauseGameButton" onClick={e => useGameContext.setGameStatus !== undefined ? useGameContext.setGameStatus("pause") : ""}>Pause Game</button>
-      {/* <button className="EndGameButton" onClick={e => useGameContext.setGameStatus !== undefined ? useGameContext.setGameStatus("end") : ""}>End Game</button> */}
-      <PauseMenu test="test"></PauseMenu>
-      <EndMenu test="test"></EndMenu>
-      <div>It is {players.map(player => (player.id === (turn + 1) ? <span>{player.name}</span> : ""))} turn!</div>
-      <div>Scores: 
-        <ul>
-          {gameScores.map(player => <li>{player.name}: {player.score}</li>)}
-        </ul>
-      </div>
-    </div>
+      <PauseMenu gameScores={gameScores}></PauseMenu>
+      <EndMenu gameScores={gameScores}></EndMenu>
+      <RestartMenu></RestartMenu>
+    </>
   );
 }
 

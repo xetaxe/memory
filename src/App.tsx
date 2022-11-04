@@ -3,7 +3,7 @@ import GameArea from './GameArea';
 import OptionsMenu from './OptionsMenu';
 
 
-const gameStatusArray: string[] = ["define", "play", "pause", "end"]
+const gameStatusArray: string[] = ["define", "play", "pause", "end", "restart"]
 
 export interface IGameStatusContext {
   gameStatus?: string,
@@ -15,7 +15,7 @@ export const GameStatusContext = createContext<IGameStatusContext>({});
 
 let App: React.FC = () => {
 
-  const [level, setLevel] = useState({"level": 1, "numCards": 10});
+  const [level, setLevel] = useState({"level": 1, "numCards": 12});
   const [players, setPlayers] = useState([ {"id": 1, "name": "Player 1"}, {"id": 2, "name": "Player 2"}]);
   const [gameStatus, setGameStatus] = useState(gameStatusArray[0]);
 
