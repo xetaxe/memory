@@ -21,11 +21,13 @@ body {
 }
 
 .webtitle {
+  text-align: center;
   font-family: $web-title-font;
-  font-size: min(5rem, 10vw);
+  font-size: min(5rem, 20vw);
 }
 
 .webtitle--reduced {
+  margin: 0 0 min(5vh, 15px);
   font-size: min(5rem, 10vw);
 }
 

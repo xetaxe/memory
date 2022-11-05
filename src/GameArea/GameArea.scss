@@ -15,7 +15,8 @@
 .infoarea {
 	width: 100%;
 	@include tablet-landscape-up {
-		width: 30%
+		width: 25%;
+		max-width: 350px;
 	}
 	display: flex;
 	margin: 0 auto;
@@ -32,23 +33,25 @@
 }
 
 .cardsarea {
-	width: 100%;
+	width: 98%;
 	@include tablet-landscape-up {
-		width: 70%
+		width: 75%
 	}
-	display: flex;
-	margin: 0 auto;
-	justify-content: center;
-	align-items: center;
+	@include typical-flexi;
+	gap: min(6px, 1vw);
 	flex-wrap: wrap;
 	overflow-y: auto;
 }
 
-.CardContainer {
-	border: 1px solid green;
-}
-
-.Card {
+.card {
+	width: max(102px, 23%);
+	@include tablet-portrait-up {
+		width: 15%;
+		// max-width: 205px;
+	}
+	font-size: 1.5rem;
+	padding: 0;
+	aspect-ratio: 3 / 4;
 	border: 1px solid red;
 	border-radius: 0.5em;
 	padding: 1em 0.5em;
@@ -104,7 +107,7 @@
 	gap: min(2vh, 15px);
 	padding: 2vw;
 	color: hsl(150, 20%, 95%);
-	font-size: clamp(1rem, 4vw, 1.5rem)
+	font-size: clamp(1rem, 4vw, 1.5rem);
 
 	&__restartbutton {
 		background-color: bisque;

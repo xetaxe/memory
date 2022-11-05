@@ -26,7 +26,7 @@ type EndMenuProps = {
 function Card({cardId, cardContent, cardReveal, onClickedCard}: CardProps) {
   const cardShowContent = (cardReveal === cardShow[0] ? "" : cardContent);
   return (
-    <div className="Card" onClick={() => onClickedCard(cardId)}>
+    <div className="card" onClick={() => onClickedCard(cardId)}>
       {cardShowContent}
     </div>
   )
@@ -39,9 +39,9 @@ function PauseMenu({gameScores}: PauseMenuProps) {
 
   return (
     <div className={`pausemenu ${useGameContext.gameStatus !== "pause" ? "hide" : ""}`}>
-      <div>Scores: 
-        <ul>
-          {gameScores.map(player => <li>{player.name}: {player.score}</li>)}
+      <div className="pausemenu__scores">Scores: 
+        <ul className="pausemenu__scoreslist">
+          {gameScores.map(player => <li className="pausemenu__scoresitem">{player.name}: {player.score}</li>)}
         </ul>
       </div>
       <button className="pausemenu__resumebutton" onClick={e => useGameContext.setGameStatus != undefined ? useGameContext.setGameStatus("play") : ""}>Resume Game</button>
@@ -67,9 +67,9 @@ function EndMenu({gameScores}: EndMenuProps) {
 
   return (
     <div className={`endmenu ${useGameContext.gameStatus !== "end" ? "hide" : ""}`}>
-      <div>Scores: 
-        <ul>
-          {gameScores.map(player => <li>{player.name}: {player.score}</li>)}
+      <div className="endmenu__scores">Scores: 
+        <ul className="endmenu__scoreslist">
+          {gameScores.map(player => <li className="endmenu__scoresitem">{player.name}: {player.score}</li>)}
         </ul>
       </div>
       <button className="endmenu__restartbutton" onClick={e => useGameContext.setGameStatus != undefined ? useGameContext.setGameStatus("define") : ""}>Restart Game</button>
@@ -231,7 +231,8 @@ export default function GameArea({numCards, players}: GameAreaProps) {
 }
 
 
-////////Return random emoji pairs logic
+
+//////// Return random emoji pairs logic
 function RandomCardPairs(referenceArray: string[], numCards: number) {
   let randomCardPairs: string[] = [];
 

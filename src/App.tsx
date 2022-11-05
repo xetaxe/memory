@@ -47,7 +47,7 @@ let App: React.FC = () => {
 
   return (
     <GameStatusContext.Provider value={AppGameStatus}>
-      <h1 className="webtitle"> EPIC MEMORY </h1>
+      <h1 className={`webtitle ${gameStatus !== "define" ? "webtitle--reduced" : ""}`}> EPIC MEMORY </h1>
       {optionsMenu}
       {gameArea}
     </GameStatusContext.Provider>
