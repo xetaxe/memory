@@ -15,7 +15,7 @@ export const GameStatusContext = createContext<IGameStatusContext>({});
 
 let App: React.FC = () => {
 
-  const [level, setLevel] = useState({"level": 1, "numCards": 12});
+  const [level, setLevel] = useState({"level": 1, "numCards": 16});
   const [players, setPlayers] = useState([ {"id": 1, "name": "Player 1"}, {"id": 2, "name": "Player 2"}]);
   const [gameStatus, setGameStatus] = useState(gameStatusArray[0]);
 
@@ -47,7 +47,7 @@ let App: React.FC = () => {
 
   return (
     <GameStatusContext.Provider value={AppGameStatus}>
-      <h1 className={`webtitle ${gameStatus !== "define" ? "webtitle--reduced" : ""}`}> EPIC MEMORY </h1>
+      <h1 className={`webtitle ${gameStatus !== "define" ? "hide" : ""}`}> EPIC MEMOJY </h1>
       {optionsMenu}
       {gameArea}
     </GameStatusContext.Provider>

@@ -10,24 +10,21 @@ body {
   font-weight: 400;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: black
+  background-color: hsl(270, 56%, 91%),
 }
 
 .appcontainer {
   @include typical-flexi;
   min-height: 100vh;
+  max-width: 1440px;
   flex-direction: column;
+  justify-content: flex-start;
   background-image: linear-gradient(to bottom right, hsl(60, 56%, 91%), hsl(60, 56%, 72%))
 }
 
 .webtitle {
   text-align: center;
   font-family: $web-title-font;
+  font-weight: 900;
   font-size: min(5rem, 20vw);
 }
-
-.webtitle--reduced {
-  margin: 0 0 min(5vh, 15px);
-  font-size: min(5rem, 10vw);
-}
-

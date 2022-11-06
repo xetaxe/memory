@@ -1,8 +1,9 @@
 @import "../vars_and_mixins";
 
 .gamearea {
+	width: 100%;
 	display: flex;
-	flex-direction: column;
+	flex-direction: column-reverse;
 	@include tablet-landscape-up {
 		flex-direction: row-reverse;
 	}
@@ -16,14 +17,57 @@
 	width: 100%;
 	@include tablet-landscape-up {
 		width: 25%;
-		max-width: 350px;
+		max-width: 300px;
+		flex-direction: column;
 	}
 	display: flex;
 	margin: 0 auto;
+	flex-direction: row;
 	justify-content: center;
 	align-items: center;
 	flex-wrap: wrap;
 	overflow-y: auto;
+
+	&__webtitle--reduced {
+		margin: max(6vh, 15px) 0;
+		font-size: 10vw;
+		@include tablet-landscape-up {
+			font-size: min(5vw, 4.5rem);
+		}
+		font-weight: 900;
+		text-align: center;
+		width: 100%;
+		margin: 0 auto;
+		padding-top: min(15px, 3vh);
+	}
+
+	&__turn {
+		width: 32%;
+		@include tablet-landscape-up {
+			width: 100%;
+		}
+		text-align: center;
+	}
+
+	&__scores {
+		width: 32%;
+		@include tablet-landscape-up {
+			width: 100%;
+		}
+		text-align: center;
+	}
+
+	&__scoreslist {
+		list-style: none;
+	}
+
+	&__buttons {
+		width: 32%;
+		@include tablet-landscape-up {
+			width: 100%;
+		}
+		text-align: center;
+	}
 
 	&__pausegame, &__restartgame {
 		background-color: transparent;
@@ -33,30 +77,36 @@
 }
 
 .cardsarea {
-	width: 98%;
+	width: 100%;
 	@include tablet-landscape-up {
-		width: 75%
+		width: 75%;
 	}
 	@include typical-flexi;
 	gap: min(6px, 1vw);
 	flex-wrap: wrap;
+	align-content: center;
 	overflow-y: auto;
 }
 
 .card {
-	width: max(102px, 23%);
-	@include tablet-portrait-up {
-		width: 15%;
-		// max-width: 205px;
+	width: 23%;
+	//6 cards
+	@media (min-width: 910px) {
+		width: 11.5%;
 	}
 	font-size: 1.5rem;
 	padding: 0;
 	aspect-ratio: 3 / 4;
 	border: 1px solid red;
 	border-radius: 0.5em;
-	padding: 1em 0.5em;
-	font-size: clamp(25px, 3.5em, 40px);
-	min-width: 2.5em;
+}
+
+.cardcontent {
+	@include typical-flexi;
+	width: 100%;
+	height: 100%;
+	font-size: clamp(25px, 3.5em, 60px);
+	// font-size: 100%;
 }
 
 .pausemenu {
@@ -152,7 +202,9 @@
 
 
 
-///////// SHOW, HIDE & BLUR MENU //////////
+//////////// SHOW, HIDE & BLUR MENU //////////////// 
+
+  
 .hide {
 	display: none;
 }
@@ -160,7 +212,7 @@
 
 .blur {
 	filter: blur(4px);
-	transition: 0.5s filter linear;
+	transition: 0.5s filter ease-out;
 	pointer-events: none;
 	user-select: none;
 }

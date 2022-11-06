@@ -3,10 +3,10 @@ import './OptionsMenu.scss';
 import { GameStatusContext, IGameStatusContext } from "../App";
 
 const LEVELS_ARRAY: { level: number, numCards: number }[] = [
-  {"level": 1, "numCards": 12},
-  {"level": 2, "numCards": 18},
-  {"level": 3, "numCards": 24},
-  {"level": 4, "numCards": 36},
+  {"level": 1, "numCards": 16},
+  {"level": 2, "numCards": 24},
+  {"level": 3, "numCards": 32},
+  {"level": 4, "numCards": 40},
   {"level": 5, "numCards": 48},
 ];
 
