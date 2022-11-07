@@ -63,7 +63,7 @@ export default function OptionsMenu({level, updateLevel, players, updatePlayers}
     //Name validations here
     if(newName.length < 2)
       return
-    if(newName.length > 15){
+    if(newName.length > 10){
       console.log("The name is too long!");
       return
     }
@@ -109,7 +109,7 @@ export default function OptionsMenu({level, updateLevel, players, updatePlayers}
               <div className="playersoptions__playername"> 
                 <input className="playersoptions__playerinput" type="text" defaultValue= {player.name}
                   onBlur={ e => {
-                    if( e.currentTarget.value.length < 2 || e.currentTarget.value.length > 15 ){
+                    if( e.currentTarget.value.length < 2 || e.currentTarget.value.length > 10 ){
                       e.target.value = player.name;
                       return;
                     }
