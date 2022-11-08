@@ -15,33 +15,33 @@ export const GameStatusContext = createContext<IGameStatusContext>({});
 
 let App: React.FC = () => {
 
-  const [level, setLevel] = useState({"level": 1, "numCards": 16});
+  const [totalCards, setTotalCards] = useState(16);
   const [players, setPlayers] = useState([ {"id": 1, "name": "Player 1"}, {"id": 2, "name": "Player 2"}]);
   const [gameStatus, setGameStatus] = useState(gameStatusArray[0]);
 
   useEffect(() => {
     console.log("APP:");
-  }, [players, level]);
+  }, [players, totalCards]);
 
   const optionsMenu =  useMemo(() => {
     return (
       <OptionsMenu 
-        level={level}
-        updateLevel={(levelUpdate: { level: number, numCards: number }) => setLevel(levelUpdate)}
+        totalCards={totalCards}
+        updateTotalCards={(totalCardsUpdate: number) => setTotalCards(totalCardsUpdate)}
         players={players}
         updatePlayers={(playersUpdate: { id: number, name: string }[]) => setPlayers(playersUpdate)}
       />
     );
-  }, [level, players]);
+  }, [totalCards, players]);
 
   const gameArea = useMemo(() => {
     return (
       <GameArea
-        numCards={level.numCards} 
+        numCards={totalCards} 
         players={players}
       />
     )
-  }, [level, players, gameStatus])
+  }, [totalCards, players, gameStatus])
 
   const AppGameStatus: IGameStatusContext = {gameStatus, setGameStatus}
 

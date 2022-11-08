@@ -157,15 +157,22 @@
 	}
 
 	&__flipcard {
-		transform: rotateY(-180deg);
+		transform: rotateY(180deg);
+	}
+
+	&__front {
+		transform: scaleX(-1);
 	}
 
 	&__back {
-		transform: rotateY(-180deg);
+		transform: rotateY(180deg);
 		@include typical-flexi;
 		width: 100%;
 		height: 100%;
-		// font-size: clamp(20px, 15vw, 90px);
+		font-size: clamp(20px, 15vw, 90px);
+		@media (min-width: 910px) {
+			font-size: clamp(60px, 5vw, 90px);
+		}
 		backface-visibility: hidden;
 	}
 }
@@ -198,6 +205,10 @@
 	font-size: clamp(1rem, 4vw, 1.5rem);
 	filter: none;
 
+	&__scoreslist {
+		list-style: none;
+	}
+
 	&__resumebutton {
 		background-color: bisque;
 		padding: 0.3em 2em;
@@ -227,6 +238,48 @@
 	padding: 2vw;
 	color: hsl(150, 20%, 95%);
 	font-size: clamp(1rem, 4vw, 1.5rem);
+
+	&__scoreslist {
+		list-style: none;
+		padding-left: 0;
+	}
+
+	&__scoresitem {
+		font-size: clamp(1.1rem, 3vw, 2rem);
+		@include typical-flexi;
+	}
+
+	&__scoresimg {
+		width: min(50px, 6vw);
+		height: min(50px, 6vw);
+		margin: 5px 5px;
+		animation: wiggle 6s linear infinite;
+	}
+
+	/* Keyframes */
+	@keyframes wiggle {
+		0%, 3% {
+		transform: rotateZ(0);
+		}
+		5% {
+		transform: rotateZ(-15deg);
+		}
+		8% {
+		transform: rotateZ(10deg);
+		}
+		12% {
+		transform: rotateZ(-10deg);
+		}
+		15% {
+		transform: rotateZ(6deg);
+		}
+		17% {
+		transform: rotateZ(-4deg);
+		}
+		19%, 100% {
+		transform: rotateZ(0);
+		}
+	}
 
 	&__restartbutton {
 		background-color: bisque;

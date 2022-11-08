@@ -24,12 +24,55 @@
 		justify-content: center;
 	}
 
+	&__selectcontainer {
+		width: 35%;
+	}
+
 	&__selector {
+		width: 100%;
+		@include typical-flexi;
+		justify-content: space-between;
+	}
+
+	&__less, &__more  {
+		background-color: transparent;
+		border: none;
+		fill:hsl(340, 0%, 60%);
+		width: clamp(38px, 8vw, 65px);
+		// height: 6px;
+		padding: 0;
+	}
+
+	&__more  {
+		transform: rotateY(180deg);
+	}
+
+	&__value {
 		width: 50%;
+		text-align: center;
+		border: none;
+		padding: 5px 0;
+		border-radius: 1vw;
+		background-color: hsl(340, 0%, 40%);
+		font-family: $secondary-font;
+		font-size: 1.15em;
+		color:hsl(150, 20%, 90%);
+		outline: none;
+
+		&:focus, active {
+			border: none;
+		}
+
+		
 	}
 
 	&__info {
-		width: 50%;
+		width: 65%;
+		text-align: center;
+	}
+
+	&__infopairs {
+		font-size: smaller;
 	}
 }
 
@@ -101,7 +144,7 @@
 		}
 
 		
-		}
+	}
 
 }
 

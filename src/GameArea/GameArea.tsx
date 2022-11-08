@@ -71,11 +71,16 @@ function EndMenu({gameScores}: EndMenuProps) {
   
   const useGameContext: IGameStatusContext = useContext(GameStatusContext);
 
+  const orderedPlayers: PlayerScore[] = gameScores.slice();
+
+  orderedPlayers.sort((a,b) => (a.score < b.score) ? 1 : -1);
+
   return (
     <div className={`endmenu ${useGameContext.gameStatus !== "end" ? "hide" : ""}`}>
       <div className="endmenu__scores">Scores: 
         <ul className="endmenu__scoreslist">
-          {gameScores.map(player => <li className="endmenu__scoresitem">{player.name}: {player.score}</li>)}
+          {orderedPlayers.map((player,index) =>             
+            <li className="endmenu__scoresitem"><img className="endmenu__scoresimg" height="30" width="30" src={"/img/p"+index+".png"}/>{player.name.toUpperCase() }: <span> &nbsp; &nbsp;</span> {player.score}</li>)}
         </ul>
       </div>
       <button className="endmenu__restartbutton" onClick={e => useGameContext.setGameStatus != undefined ? useGameContext.setGameStatus("define") : ""}>Restart Game</button>

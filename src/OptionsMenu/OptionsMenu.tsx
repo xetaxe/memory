@@ -2,13 +2,13 @@ import React, {useContext} from 'react';
 import './OptionsMenu.scss';
 import { GameStatusContext, IGameStatusContext } from "../App";
 
-const LEVELS_ARRAY: { level: number, numCards: number }[] = [
-  {"level": 1, "numCards": 16},
-  {"level": 2, "numCards": 24},
-  {"level": 3, "numCards": 32},
-  {"level": 4, "numCards": 40},
-  {"level": 5, "numCards": 48},
-];
+// const LEVELS_ARRAY: { level: number, numCards: number }[] = [
+//   {"level": 1, "numCards": 16},
+//   {"level": 2, "numCards": 24},
+//   {"level": 3, "numCards": 32},
+//   {"level": 4, "numCards": 40},
+//   {"level": 5, "numCards": 48},
+// ];
 
 const DEFAULT_PLAYERS: { id: number, name: string}[] = [
   {"id": 1, "name": "Player 1"},
@@ -18,33 +18,28 @@ const DEFAULT_PLAYERS: { id: number, name: string}[] = [
 ];
 
 
-type LevelOption = {
-  level: number,
-  numCards: number
-}
-
 type Player = {
   id: number,
   name: string
 }
 
 type OptionsMenuProps = {
-  level: LevelOption,
-  updateLevel: (value: LevelOption) => void,
+  totalCards: number,
+  updateTotalCards: (value: number) => void,
   players: Player[],
   updatePlayers: (value: Player[]) => void,
 }
 
 
-export default function OptionsMenu({level, updateLevel, players, updatePlayers}:OptionsMenuProps) {
+export default function OptionsMenu({totalCards, updateTotalCards, players, updatePlayers}:OptionsMenuProps) {
 
-  const chooseLevel = (newLevel: string) => {
-    let foundLevel: LevelOption | undefined = LEVELS_ARRAY.find(elem => elem.level === parseInt(newLevel));
-    if(foundLevel === undefined) {
-      foundLevel = LEVELS_ARRAY[0];
-    }
-    updateLevel(foundLevel);
-  }
+  // const chooseLevel = (newLevel: string) => {
+  //   let foundLevel: LevelOption | undefined = LEVELS_ARRAY.find(elem => elem.level === parseInt(newLevel));
+  //   if(foundLevel === undefined) {
+  //     foundLevel = LEVELS_ARRAY[0];
+  //   }
+  //   updateLevel(foundLevel);
+  // }
 
   const updateNumPlayers = (currentPlayers: Player[], newNumber: number) => {
     const numPlayers = currentPlayers.length;
@@ -85,14 +80,24 @@ export default function OptionsMenu({level, updateLevel, players, updatePlayers}
     <div className={`optionsmenu ${useGameContext.gameStatus !== "define" ? "hide" : ""}`}>
       <div className="difficultyoptions">
         <div className="difficultyoptions__title">
-          Choose the difficulty!
+          Choose the number of cards!
         </div>
-        <div className='difficultyoptions__selector'>
-          <input type="range" min="1" max="5" value={level.level} className="DifRange" onChange={e => {e.preventDefault(); chooseLevel(e.target.value)}}/>
+        <div className='difficultyoptions__selectcontainer'>
+          <div className='difficultyoptions__selector'>
+            <button className="difficultyoptions__less" onClick={e => updateTotalCards(10)}> <svg xmlns="http://www.w3.org/2000/svg" height="48" width="48"><path d="M28 34 18 24l10-10Z"/></svg> </button>
+            <input className="difficultyoptions__value" type="text" defaultValue= {totalCards}
+              onBlur={ e => updateTotalCards(parseInt(e.currentTarget.value)) }
+              onKeyPress={ e => {
+                if (e.key === "Enter" || e.key === "Tab") {
+                  updateTotalCards(parseInt(e.currentTarget.value))
+                }
+              }}
+            />
+            <button className="difficultyoptions__more" onClick={e => updateTotalCards(30)}> <svg xmlns="http://www.w3.org/2000/svg" height="48" width="48"><path d="M28 34 18 24l10-10Z"/></svg></button>          
+          </div>
         </div>
         <div className='difficultyoptions__info'>
-        Level: {level.level} <br/>
-        Num. of cards: {level.numCards};
+        Num. of cards: {totalCards} <span className='difficultyoptions__infopairs'>({totalCards / 2} pairs)</span>
         </div>
       </div>
       <div className='playersoptions'>
