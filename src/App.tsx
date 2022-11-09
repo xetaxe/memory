@@ -27,7 +27,13 @@ let App: React.FC = () => {
     return (
       <OptionsMenu 
         totalCards={totalCards}
-        updateTotalCards={(totalCardsUpdate: number) => setTotalCards(totalCardsUpdate)}
+        updateTotalCards={(newTotalCards: number, incrementTotalCards: number) => {
+          if (incrementTotalCards === 0) 
+            setTotalCards(newTotalCards)
+          else 
+            setTotalCards((prev) => prev + incrementTotalCards)
+          }
+        }
         players={players}
         updatePlayers={(playersUpdate: { id: number, name: string }[]) => setPlayers(playersUpdate)}
       />

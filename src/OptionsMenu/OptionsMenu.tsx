@@ -25,7 +25,7 @@ type Player = {
 
 type OptionsMenuProps = {
   totalCards: number,
-  updateTotalCards: (value: number) => void,
+  updateTotalCards: (newTotalCards: number, incrementTotalCards: number) => void,
   players: Player[],
   updatePlayers: (value: Player[]) => void,
 }
@@ -33,13 +33,28 @@ type OptionsMenuProps = {
 
 export default function OptionsMenu({totalCards, updateTotalCards, players, updatePlayers}:OptionsMenuProps) {
 
-  // const chooseLevel = (newLevel: string) => {
-  //   let foundLevel: LevelOption | undefined = LEVELS_ARRAY.find(elem => elem.level === parseInt(newLevel));
-  //   if(foundLevel === undefined) {
-  //     foundLevel = LEVELS_ARRAY[0];
-  //   }
-  //   updateLevel(foundLevel);
-  // }
+  const chooseCards = (newTotalCards: number, incrementTotalCards: number) => {
+    if (incrementTotalCards === 0) {
+      if (typeof newTotalCards === "number") {
+        if (newTotalCards % 2 === 1) {
+          console.log("The total number of cards must be even!");
+          return totalCards;
+        } 
+        if (newTotalCards < 2) {
+          console.log("Too few cards!");
+          return totalCards;
+        } else if (newTotalCards > 110) {
+          console.log("Too many cards!");
+          return totalCards;
+        }
+      }
+
+      updateTotalCards(newTotalCards, 0);
+    } else {
+      if ((totalCards + incrementTotalCards) >= 2 && (totalCards + incrementTotalCards) <= 110)
+        updateTotalCards(0, incrementTotalCards);
+    }
+  }
 
   const updateNumPlayers = (currentPlayers: Player[], newNumber: number) => {
     const numPlayers = currentPlayers.length;
@@ -84,16 +99,26 @@ export default function OptionsMenu({totalCards, updateTotalCards, players, upda
         </div>
         <div className='difficultyoptions__selectcontainer'>
           <div className='difficultyoptions__selector'>
-            <button className="difficultyoptions__less" onClick={e => updateTotalCards(10)}> <svg xmlns="http://www.w3.org/2000/svg" height="48" width="48"><path d="M28 34 18 24l10-10Z"/></svg> </button>
-            <input className="difficultyoptions__value" type="text" defaultValue= {totalCards}
-              onBlur={ e => updateTotalCards(parseInt(e.currentTarget.value)) }
+            <button className="difficultyoptions__less" onClick={e => chooseCards(0, -2)}> <svg xmlns="http://www.w3.org/2000/svg" height="48" width="48"><path d="M28 34 18 24l10-10Z"/></svg> </button>
+            <input className="difficultyoptions__value" type="text" defaultValue={totalCards} value= {totalCards}
+              onFocus={e => e.currentTarget.value = ""}
+              onBlur={ e => {
+                chooseCards(parseInt(e.currentTarget.value), 0);
+                // if (e.currentTarget.value === undefined)
+                //   e.currentTarget.value = totalCards;
+              }}
               onKeyPress={ e => {
+                e.preventDefault();
                 if (e.key === "Enter" || e.key === "Tab") {
-                  updateTotalCards(parseInt(e.currentTarget.value))
+                  chooseCards(parseInt(e.currentTarget.value), 0);
+                  e.currentTarget.blur();
+                }
+                else {
+                  e.currentTarget.value += e.key;
                 }
               }}
             />
-            <button className="difficultyoptions__more" onClick={e => updateTotalCards(30)}> <svg xmlns="http://www.w3.org/2000/svg" height="48" width="48"><path d="M28 34 18 24l10-10Z"/></svg></button>          
+            <button className="difficultyoptions__more" onClick={e => chooseCards(0, 2)}> <svg xmlns="http://www.w3.org/2000/svg" height="48" width="48"><path d="M28 34 18 24l10-10Z"/></svg></button>          
           </div>
         </div>
         <div className='difficultyoptions__info'>
