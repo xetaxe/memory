@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useCallback, useRef, useContext, useEffect, useMemo, useState} from 'react';
 import './OptionsMenu.scss';
 import { GameStatusContext, IGameStatusContext } from "../App";
 
@@ -32,27 +32,35 @@ type OptionsMenuProps = {
 
 
 export default function OptionsMenu({totalCards, updateTotalCards, players, updatePlayers}:OptionsMenuProps) {
-
-  const chooseCards = (newTotalCards: number, incrementTotalCards: number) => {
+  
+  const myInterval = useRef<any>(undefined);
+  const [IncDec, setIncDec] = useState("stopInc");
+  console.log(IncDec);
+  
+  const chooseCards = (newTotalCards: any, incrementTotalCards: number):number => {
+    let newTotalCardsNum =  parseInt(newTotalCards);
+    if ( typeof newTotalCardsNum !== 'number' || isNaN(newTotalCardsNum) ) {
+      return totalCards;
+    }
     if (incrementTotalCards === 0) {
-      if (typeof newTotalCards === "number") {
-        if (newTotalCards % 2 === 1) {
-          console.log("The total number of cards must be even!");
-          return totalCards;
-        } 
-        if (newTotalCards < 2) {
-          console.log("Too few cards!");
-          return totalCards;
-        } else if (newTotalCards > 110) {
-          console.log("Too many cards!");
-          return totalCards;
-        }
+      if (newTotalCardsNum % 2 === 1) {
+        console.log("The total number of cards must be even!");
+        updateTotalCards((newTotalCardsNum+1), 0);
+        return totalCards;
+      } 
+      if (newTotalCardsNum < 2) {
+        console.log("Too few cards!");
+        return totalCards;
+      } else if (newTotalCardsNum > 110) {
+        console.log("Too many cards!");
+        return totalCards;
       }
-
-      updateTotalCards(newTotalCards, 0);
+      updateTotalCards(newTotalCardsNum, 0);
+      return totalCards;
     } else {
       if ((totalCards + incrementTotalCards) >= 2 && (totalCards + incrementTotalCards) <= 110)
         updateTotalCards(0, incrementTotalCards);
+      return totalCards;
     }
   }
 
@@ -87,9 +95,45 @@ export default function OptionsMenu({totalCards, updateTotalCards, players, upda
     );
   }
 
+  // function useInterval(callback:any, delay:number) {
+  //   const savedCallback = useRef();
+  
+  //   // Remember the latest callback.
+  //   useEffect(() => {
+  //     savedCallback.current = callback;
+  //   }, [callback]);
+  
+  //   // Set up the interval.
+  //   useEffect(() => {
+  //     function tick() {
+  //         savedCallback.current();
+  //     }
+  //     if (delay !== null) {
+  //       let id = setInterval(tick, delay);
+  //       return () => clearInterval(id);
+  //     }
+  //   }, [delay]);
+  // }
+  
+  useEffect(() => {
+    if (IncDec === "startInc") {
+      console.log("weofiwe");
+      myInterval.current = setInterval(() => {
+        chooseCards(0, 2);
+      }, 100);
+    } else if(IncDec === "startDec") {
+      myInterval.current = setInterval(() => {
+        chooseCards(0, -2);
+      }, 100);
+    } else {
+      clearInterval(myInterval.current);
+    }
+
+    return () => clearInterval(myInterval.current)
+  }, [IncDec])
+
+
   const useGameContext: IGameStatusContext = useContext(GameStatusContext);
-
-
 
   return (
     <div className={`optionsmenu ${useGameContext.gameStatus !== "define" ? "hide" : ""}`}>
@@ -99,18 +143,19 @@ export default function OptionsMenu({totalCards, updateTotalCards, players, upda
         </div>
         <div className='difficultyoptions__selectcontainer'>
           <div className='difficultyoptions__selector'>
-            <button className="difficultyoptions__less" onClick={e => chooseCards(0, -2)}> <svg xmlns="http://www.w3.org/2000/svg" height="48" width="48"><path d="M28 34 18 24l10-10Z"/></svg> </button>
-            <input className="difficultyoptions__value" type="text" defaultValue={totalCards} value= {totalCards}
+            <button className="difficultyoptions__less" onClick={e => chooseCards(0, -2)} onMouseDown={e => setIncDec("startDec")}
+              onMouseUp={e => setIncDec("stopDec")}> <svg xmlns="http://www.w3.org/2000/svg" height="48" width="48"><path d="M28 34 18 24l10-10Z"/></svg> </button>
+            <input className="difficultyoptions__value" type="text" value= {totalCards}
               onFocus={e => e.currentTarget.value = ""}
               onBlur={ e => {
-                chooseCards(parseInt(e.currentTarget.value), 0);
-                // if (e.currentTarget.value === undefined)
-                //   e.currentTarget.value = totalCards;
+                if (e.currentTarget.value === totalCards.toString())
+                  return 0;
+                e.currentTarget.value = chooseCards(e.currentTarget.value, 0).toString();
               }}
               onKeyPress={ e => {
                 e.preventDefault();
                 if (e.key === "Enter" || e.key === "Tab") {
-                  chooseCards(parseInt(e.currentTarget.value), 0);
+                  e.currentTarget.value = chooseCards(e.currentTarget.value, 0).toString();
                   e.currentTarget.blur();
                 }
                 else {
@@ -118,7 +163,8 @@ export default function OptionsMenu({totalCards, updateTotalCards, players, upda
                 }
               }}
             />
-            <button className="difficultyoptions__more" onClick={e => chooseCards(0, 2)}> <svg xmlns="http://www.w3.org/2000/svg" height="48" width="48"><path d="M28 34 18 24l10-10Z"/></svg></button>          
+            <button className="difficultyoptions__more" onClick={e => chooseCards(0, 2)} onMouseDown={e => setIncDec("startInc")}
+              onMouseUp={e => setIncDec("stopInc")}> <svg xmlns="http://www.w3.org/2000/svg" height="48" width="48"><path d="M28 34 18 24l10-10Z"/></svg></button>          
           </div>
         </div>
         <div className='difficultyoptions__info'>
