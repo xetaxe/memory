@@ -1,5 +1,5 @@
 import { render } from '@testing-library/react';
-import React, {useState, useMemo, createContext, useCallback} from 'react';
+import React, {useState, useEffect, createContext, useCallback} from 'react';
 import { JsxElement } from 'typescript';
 import GameArea from './GameArea';
 import OptionsMenu from './OptionsMenu';
@@ -26,12 +26,19 @@ let App: React.FC = () => {
 
   const updatePlayers = (updatedPlayersArray: Player[]) => setPlayers(updatedPlayersArray);
 
+
+  //Reset scores between games
+  useEffect(() => {
+    if (gameStatus === "define")
+      updatePlayers(players.map((player) => ({...player, score: 0}))); 
+  }, [gameStatus])
+
   return (
     <GameStatusContext.Provider value={GameStatus}>
       <h1 className={`webtitle ${gameStatus !== "define" ? "hide" : ""}`}> EPIC MEMOJY </h1>
       <OptionsMenu totalCards={totalCards} updateTotalCards={updateTotalCards}
         players={players} updatePlayers={updatePlayers}/>
-      <GameArea numCards={totalCards} players={players}/>
+      <GameArea numCards={totalCards} players={players} updatePlayers={updatePlayers}/>
     </GameStatusContext.Provider>
   );
 }

@@ -22,7 +22,8 @@ type OptionsMenuProps = {
 
 type GameAreaProps = {
   numCards: number,
-  players: Player[]
+  players: Player[],
+  updatePlayers: (value: Player[]) => void
 }
 
 type Card = {
@@ -40,11 +41,11 @@ type CardProps = {
 }
 
 type PauseMenuProps = {
-  gameScores: Player[]
+  players: Player[]
 }
 
 type EndMenuProps = {
-  gameScores: Player[]
+  players: Player[]
 }
 
 type SettingsMenuProps = {

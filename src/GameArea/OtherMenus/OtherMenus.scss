@@ -1,0 +1,202 @@
+@import "../../vars_and_mixins";
+
+.pausemenu {
+	position:fixed;
+    left: 50%;
+    top: 50%;
+    -ms-transform: translate(-50%,-50%);
+    -moz-transform:translate(-50%,-50%);
+    -webkit-transform: translate(-50%,-50%);
+    transform: translate(-50%,-50%);
+	width: min(96%, 600px);
+	border: 2px solid hsl(100, 56%, 31%);
+	border-radius: min(2.5vw, 15px);
+	background-color: hsl(340, 0%, 30%);
+	display: flex;
+	flex-direction: column;
+	gap: min(2vh, 15px);
+	padding: 2vw;
+	color: hsl(150, 20%, 95%);
+	font-size: clamp(1rem, 4vw, 1.5rem);
+	filter: none;
+
+	&__scoreslist {
+		list-style: none;
+	}
+
+	&__resumebutton {
+		background-color: bisque;
+		padding: 0.3em 2em;
+		border-radius: 100vh;
+		border: none;
+		font-family: $primary-font;
+		font-weight: 700;
+		font-size: 1em;
+	}
+}
+
+.endmenu {
+	position:fixed;
+    left: 50%;
+    top: 50%;
+    -ms-transform: translate(-50%,-50%);
+    -moz-transform:translate(-50%,-50%);
+    -webkit-transform: translate(-50%,-50%);
+    transform: translate(-50%,-50%);
+	width: min(96%, 600px);
+	border: 2px solid hsl(100, 56%, 31%);
+	border-radius: min(2.5vw, 15px);
+	background-color: hsl(340, 0%, 30%);
+	display: flex;
+	flex-direction: column;
+	gap: min(2vh, 15px);
+	padding: 2vw;
+	color: hsl(150, 20%, 95%);
+	font-size: clamp(1rem, 4vw, 1.5rem);
+
+	&__scoreslist {
+		list-style: none;
+		padding-left: 0;
+	}
+
+	&__scoresitem {
+		font-size: clamp(1.1rem, 3vw, 2rem);
+		@include typical-flexi;
+	}
+
+	&__scoresimg {
+		width: min(50px, 6vw);
+		height: min(50px, 6vw);
+		margin: 5px 5px;
+		animation: wiggle 6s linear infinite;
+	}
+
+	/* Keyframes */
+	@keyframes wiggle {
+		0%, 3% {
+		transform: rotateZ(0);
+		}
+		5% {
+		transform: rotateZ(-15deg);
+		}
+		8% {
+		transform: rotateZ(10deg);
+		}
+		12% {
+		transform: rotateZ(-10deg);
+		}
+		15% {
+		transform: rotateZ(6deg);
+		}
+		17% {
+		transform: rotateZ(-4deg);
+		}
+		19%, 100% {
+		transform: rotateZ(0);
+		}
+	}
+
+	&__restartbutton {
+		background-color: bisque;
+		padding: 0.3em 2em;
+		border-radius: 100vh;
+		border: none;
+		font-family: $primary-font;
+		font-weight: 700;
+		font-size: 1em;
+	}
+}
+
+.restartmenu {
+	position:fixed;
+    left: 50%;
+    top: 50%;
+    -ms-transform: translate(-50%,-50%);
+    -moz-transform:translate(-50%,-50%);
+    -webkit-transform: translate(-50%,-50%);
+    transform: translate(-50%,-50%);
+	width: min(96%, 600px);
+	border: 2px solid hsl(100, 56%, 31%);
+	border-radius: min(2.5vw, 15px);
+	background-color: hsl(340, 0%, 30%);
+	display: flex;
+	flex-direction: column;
+	gap: min(2vh, 15px);
+	padding: 2vw;
+	color: hsl(150, 20%, 95%);
+	font-size: clamp(1rem, 4vw, 1.5rem);
+
+	&__restartbutton, &__resumebutton  {
+		background-color: bisque;
+		padding: 0.3em 2em;
+		border-radius: 100vh;
+		border: none;
+		font-family: $primary-font;
+		font-weight: 700;
+		font-size: 1em;
+	}
+}
+
+.settingsmenu {
+	position:fixed;
+    left: 50%;
+    top: 50%;
+    -ms-transform: translate(-50%,-50%);
+    -moz-transform:translate(-50%,-50%);
+    -webkit-transform: translate(-50%,-50%);
+    transform: translate(-50%,-50%);
+	width: min(96%, 600px);
+	border: 2px solid hsl(100, 56%, 31%);
+	border-radius: min(2.5vw, 15px);
+	background-color: hsl(340, 0%, 30%);
+	display: flex;
+	flex-direction: column;
+	gap: min(2vh, 15px);
+	padding: 2vw;
+	color: hsl(150, 20%, 95%);
+	font-size: clamp(1rem, 4vw, 1.5rem);
+
+	&__resumebutton  {
+		background-color: bisque;
+		padding: 0.3em 2em;
+		border-radius: 100vh;
+		border: none;
+		font-family: $primary-font;
+		font-weight: 700;
+		font-size: 1em;
+	}
+
+	&__cardpatternoptions {
+		width: 100%;
+		display: flex;
+		gap: 10px;
+		justify-content: center;
+		align-items: center;
+	}
+
+	&__cardpatternoption {
+		width: 60px;
+		height: 60px;
+	}
+
+	&__cardpatternoptionactive {
+		border: 4px solid aliceblue;
+	}
+}
+
+
+
+//////////// SHOW, HIDE & BLUR MENU //////////////// 
+
+  
+.hide {
+	display: none;
+}
+
+
+.blur {
+	filter: blur(4px);
+	transition: 0.5s filter ease-out;
+	pointer-events: none;
+	user-select: none;
+}

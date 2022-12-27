@@ -1,15 +1,16 @@
 import React, {useState, useEffect, useContext, useMemo, ReactElement} from 'react';
 import './GameArea.scss';
 import { GameStatusContext } from '../App';
+import { PauseMenu, RestartMenu, SettingsMenu, EndMenu } from './OtherMenus/OtherMenus';
 
-const EMOJI_ARRAY: string[] = ["✌","😂","😝","😁","😱","🙌","🍻","🔥","🌈","🌹","😡","🐶","🐬", "👀","🚗","🍎","💝","👌","😍","😉","😓","😳","💪","💩","🎉","🌺","👠","⚾","🏆","👽","💀","🐵","🐮","🐎","💣","👃","🍓","👊","💋","😘","😵","🙏","👋","🚽","💃","💎","🚀","🌙","🎁","⛄","🐰","🐍","🐫","🚲","🍉"]
+const EMOJI_ARRAY: string[] = ["✌","😂","😝","😁","😱","🙌","🍻","🔥","🌈","🌹","😡","🐶","🐬", "👀","🌞","🍎","💝","👌","😍","😉","😓","😳","💪","💩","🎉","🌺","👠","⚾","🏆","👽","💀","🐵","🐮","🐎","💣","👃","🍓","👊","💋","😘","😵","🙏","👋","🚽","💃","💎","🚀","🌙","🎁","⛄","🐰","🐍","🐫","🚲","🍉"]
 const cardShow: string[] = ["hidden", "clicked", "reveal"];
 
 
 function Card({cardId, cardContent, cardReveal, cardPattern, onClickedCard}: CardProps) {
   return (
     <div className="card" onClick={() => onClickedCard(cardId)}>
-      <div className={`card__inner  ${cardReveal === cardShow[1] || cardReveal === cardShow[2] ? "card__flipcard" : ""}`}>
+      <div className={`card__inner  ${cardReveal !== cardShow[0] ? "card__flipcard" : ""}`}>
         <div className="card__front" style={{backgroundImage: "url(/img/card_pattern"+cardPattern+".png)"}}>
         </div>
         <div className="card__back">
@@ -21,86 +22,12 @@ function Card({cardId, cardContent, cardReveal, cardPattern, onClickedCard}: Car
 }
 
 
-function PauseMenu({gameScores}: PauseMenuProps) {
-
-  const useGameContext = useContext(GameStatusContext);
-
-  return (
-    <div className={`pausemenu ${useGameContext.gameStatus !== "pause" ? "hide" : ""}`}>
-      <div className="pausemenu__scores">Scores: 
-        <ul className="pausemenu__scoreslist">
-          {gameScores.map(player => <li className="pausemenu__scoresitem">{player.name}: {player.score}</li>)}
-        </ul>
-      </div>
-      <button className="pausemenu__resumebutton" onClick={e => useGameContext.setGameStatus != undefined ? useGameContext.setGameStatus("play") : ""}>Resume Game</button>
-    </div>
-  )
-}
-
-function RestartMenu() {
-  const useGameContext = useContext(GameStatusContext);
-  return (
-    <div className={`restartmenu ${useGameContext.gameStatus !== "restart" ? "hide" : ""}`}>
-      <div className="restartmenu__title">Are you sure you want to restart the game?</div>
-      <button className="restartmenu__resumebutton" onClick={e => useGameContext.setGameStatus != undefined ? useGameContext.setGameStatus("play") : ""}>Resume Game</button>
-      <button className="restartmenu__restartbutton" onClick={e => useGameContext.setGameStatus != undefined ? useGameContext.setGameStatus("define") : ""}>Restart Game</button>
-    </div>
-  )
-}
-
-function SettingsMenu({cardPattern, changeCardPattern}: SettingsMenuProps) {
-  const useGameContext = useContext(GameStatusContext);
-  return (
-    <div className={`settingsmenu ${useGameContext.gameStatus !== "settings" ? "hide" : ""}`}>
-      <div className="settingsmenu__title">Game settings:</div>
-      <div className='settingsmenu__cardpattern'>
-        Card pattern:
-        <div className="settingsmenu__cardpatternoptions">
-          <img style={cardPattern === 1 ? {boxSizing: "content-box", border: "4px solid aliceblue"} : {}} className="settingsmenu__cardpatternoption" src={"/img/card_pattern"+1+".png"} alt="card_pattern1" onClick={() => changeCardPattern(1)} data-value="1"/>
-          <img style={cardPattern === 2 ? {boxSizing: "content-box", border: "4px solid aliceblue"} : {}} className="settingsmenu__cardpatternoption" src={"/img/card_pattern"+2+".png"} alt="card_pattern2" onClick={() => changeCardPattern(2)} data-value="2"/>
-          <img style={cardPattern === 3 ? {boxSizing: "content-box", border: "4px solid aliceblue"} : {}} className="settingsmenu__cardpatternoption" src={"/img/card_pattern"+3+".png"} alt="card_pattern3" onClick={() => changeCardPattern(3)} data-value="3"/>
-          <img style={cardPattern === 4 ? {boxSizing: "content-box", border: "4px solid aliceblue"} : {}} className="settingsmenu__cardpatternoption" src={"/img/card_pattern"+4+".png"} alt="card_pattern4" onClick={() => changeCardPattern(4)} data-value="4"/>
-        </div>
-      </div>
-      <button className="settingsmenu__resumebutton" onClick={e => useGameContext.setGameStatus != undefined ? useGameContext.setGameStatus("play") : ""}>Resume Game</button>
-    </div>
-  )
-}
-
-
-function EndMenu({gameScores}: EndMenuProps) {
-  
-  const useGameContext = useContext(GameStatusContext);
-  const orderedPlayers: Player[] = gameScores.slice();
-  orderedPlayers.sort((a,b) => (a.score < b.score) ? 1 : -1);
-
-  return (
-    <div className={`endmenu ${useGameContext.gameStatus !== "end" ? "hide" : ""}`}>
-      <div className="endmenu__scores">Scores: 
-        <ul className="endmenu__scoreslist">
-          {orderedPlayers.map((player,index) =>             
-            <li className="endmenu__scoresitem">
-              <img className="endmenu__scoresimg" height="30" width="30" src={"/img/p"+index+".png"}/>{player.name.toUpperCase() }
-              : <span> &nbsp; &nbsp;</span> {player.score}
-            </li>)}
-        </ul>
-      </div>
-      <button className="endmenu__restartbutton" onClick={e => useGameContext.setGameStatus != undefined ? useGameContext.setGameStatus("define") : ""}>Restart Game</button>
-    </div>
-  )
-}
-
-
-////////////////// WHOLE GAME AREA /////////////////////
-
-
-export default function GameArea({numCards, players}: GameAreaProps) {
+export default function GameArea({numCards, players, updatePlayers}: GameAreaProps) {
 
   const useGameContext = useContext(GameStatusContext);
 
   const [cardPattern, setCardPattern] = useState<number>(1);
   const [cardsState, setCardsState] = useState<Card[]>([]);
-  const [gameScores, setGameScores] = useState<Player[]>(players);
   const [turn, setTurn] = useState<number>(0);
 
   useEffect(() => {
@@ -110,25 +37,19 @@ export default function GameArea({numCards, players}: GameAreaProps) {
     setCardsState(fillCardsState.map((val, index) => ({cardId:index, cardContent: val, cardReveal: cardShow[0]})));
   }, [numCards, useGameContext.gameStatus]);
 
-  //Reset scores between games
-  useEffect(() => {
-    if(useGameContext.gameStatus !== "define") return undefined;
-    const fillGameScores: Player[] = players.map((player) => ({...player, score: 0}));
-    setGameScores(fillGameScores);
-  }, [players, useGameContext.gameStatus]);
-
   //Game ended?
   useEffect(() => {
     let totalCardsRevealed: number = 0;
-    for(let i=0; i<gameScores.length; i++){
-      totalCardsRevealed += gameScores[i].score;
+    for(let i=0; i<cardsState.length; i++){
+      if ( cardsState[i].cardReveal === cardShow[2])
+        totalCardsRevealed++;
     }
     //YES
-    if (totalCardsRevealed === (numCards / 2)) {
+    if (totalCardsRevealed === (numCards)) {
       if (useGameContext.setGameStatus != undefined) 
       useGameContext.setGameStatus("end");
     }
-  }, [gameScores])
+  }, [players])
 
   //Update clicked cards
   useEffect(() => {
@@ -137,7 +58,6 @@ export default function GameArea({numCards, players}: GameAreaProps) {
       if (cardsState[i].cardReveal === cardShow[1]) 
         foundCards.push(cardsState[i]);
     }
-    console.log(foundCards);
     if (foundCards.length === 2){
       setTimeout( () => {
         if (foundCards[0].cardContent === foundCards[1].cardContent){
@@ -149,18 +69,15 @@ export default function GameArea({numCards, players}: GameAreaProps) {
               return card;
             }),
           );
-          setGameScores(current =>
-            current.map(player => {
-              if (player.id === (turn + 1)) {
-                return {...player, score: player.score++};
-              }
-              return player;
-            }),
-          );
+          updatePlayers(players.map(player => {
+            if (player.id === (turn + 1)) {
+              player.score++;
+            }
+            return player;
+          }));
         } else {
           setCardsState(current =>
             current.map(card => {
-              // if (card.cardId === foundCards[0].cardId || card.cardId === foundCards[1].cardId) {
               if (card.cardReveal !== cardShow[2] ) {
                 return {...card, cardReveal: cardShow[0]};
               }
@@ -185,22 +102,10 @@ export default function GameArea({numCards, players}: GameAreaProps) {
 
 
   const onClickedCard = (cardId: number) => {
-    const firstClick: Card | undefined = cardsState.find(card => {if (card.cardReveal === cardShow[1]) return card});
-    if (firstClick === undefined){
-      setCardsState(current =>
-        current.map(card => {
-          if (card.cardId === cardId) {
-            return {...card, cardReveal: 'clicked'};
-          }
-          return card;
-        }),
-      );
-    }
-    const findSameCard: Card | undefined = cardsState.find(card => {if (card.cardId !== cardId && card.cardReveal === cardShow[1]) return card})
     setCardsState(current =>
       current.map(card => {
-        if (card.cardId === cardId) {
-          return {...card, cardReveal: 'clicked'};
+        if (card.cardId === cardId && card.cardReveal === cardShow[0]) {
+          return {...card, cardReveal: cardShow[1]};
         }
         return card;
       })
@@ -227,7 +132,7 @@ export default function GameArea({numCards, players}: GameAreaProps) {
           <div className="infoarea__scores">
             <div className="infoarea__scorestitle">Scores:</div>  
             <ul className="infoarea__scoreslist">
-              {gameScores.map(player => <li className="infoarea__listitem">{player.name}: {player.score}</li>)}
+              {players.map(player => <li className="infoarea__listitem">{player.name}: {player.score}</li>)}
             </ul>
           </div>
           <div className="infoarea__buttons">
@@ -237,8 +142,8 @@ export default function GameArea({numCards, players}: GameAreaProps) {
           </div>
         </div>
       </div>
-      <PauseMenu gameScores={gameScores}></PauseMenu>
-      <EndMenu gameScores={gameScores}></EndMenu>
+      <PauseMenu players={players}></PauseMenu>
+      <EndMenu players={players}></EndMenu>
       <RestartMenu></RestartMenu>
       <SettingsMenu cardPattern={cardPattern} changeCardPattern={changeCardPattern}></SettingsMenu>
     </>

@@ -14,21 +14,19 @@ export default function OptionsMenu({totalCards, updateTotalCards, players, upda
   
   const myInterval = useRef<any>(undefined);
   const [IncDec, setIncDec] = useState("stopInc");
-  console.log(IncDec);
   
   const chooseCards = (newTotalCards: any, incrementTotalCards: number) => {
 
     if ( incrementTotalCards !== 0){
       if ( (totalCards + incrementTotalCards) < 2 ) {
-        console.log("POLLAPOLLA:" + totalCards);
         updateTotalCards(2, 0);
         return totalCards;
       } else if ( (totalCards + incrementTotalCards) > 110){
-        console.log("POLLAPOLLA:" + totalCards);
         updateTotalCards(110, 0);
       } else {
         updateTotalCards(0, incrementTotalCards);
       }
+      return totalCards;
     }
     
     let newTotalCardsNum =  parseInt(newTotalCards);
@@ -85,17 +83,14 @@ export default function OptionsMenu({totalCards, updateTotalCards, players, upda
   
   useEffect(() => {
     if (IncDec === "startInc" && totalCards < 110) {
-      console.log("up");
       myInterval.current = setInterval(() => {
         chooseCards(0, 2);
       }, 100);
     } else if(IncDec === "startDec") {
-      console.log("down");
       myInterval.current = setInterval(() => {
         chooseCards(0, -2);
       }, 100);
     } else {
-      console.log("stoppress");
       clearInterval(myInterval.current);
     }
   }, [IncDec])
