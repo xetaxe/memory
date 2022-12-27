@@ -1,61 +1,37 @@
-import React, {useEffect, useState, useMemo, createContext} from 'react';
+import { render } from '@testing-library/react';
+import React, {useState, useMemo, createContext, useCallback} from 'react';
+import { JsxElement } from 'typescript';
 import GameArea from './GameArea';
 import OptionsMenu from './OptionsMenu';
 
+const gameStatusArray: string[] = ["define", "play", "pause", "end", "restart", "settings"]
 
-const gameStatusArray: string[] = ["define", "play", "pause", "end", "restart"]
-
-export interface IGameStatusContext {
-  gameStatus?: string,
-  setGameStatus?: (value: string) => void;
-}
-
-export const GameStatusContext = createContext<IGameStatusContext>({});
-
+export const GameStatusContext = createContext<GameStatusContextProps>({});
 
 let App: React.FC = () => {
 
   const [totalCards, setTotalCards] = useState(16);
-  const [players, setPlayers] = useState([ {"id": 1, "name": "Player 1"}, {"id": 2, "name": "Player 2"}]);
+  const [players, setPlayers] = useState<Player[]>([ {"id": 1, "name": "Player 1", score: 0}, 
+    {"id": 2, "name": "Player 2", score: 0}]);
+
   const [gameStatus, setGameStatus] = useState(gameStatusArray[0]);
+  const GameStatus: GameStatusContextProps = {gameStatus, setGameStatus};
 
-  useEffect(() => {
-    console.log("APP:");
-  }, [players, totalCards]);
+  const updateTotalCards = (newTotalCards: number, incrementTotalCards: number) => {
+    if (incrementTotalCards === 0) 
+      setTotalCards(newTotalCards)
+    else 
+      setTotalCards((prev) => prev + incrementTotalCards)
+  }
 
-  const optionsMenu =  useMemo(() => {
-    return (
-      <OptionsMenu 
-        totalCards={totalCards}
-        updateTotalCards={(newTotalCards: number, incrementTotalCards: number) => {
-          if (incrementTotalCards === 0) 
-            setTotalCards(newTotalCards)
-          else 
-            setTotalCards((prev) => prev + incrementTotalCards)
-          }
-        }
-        players={players}
-        updatePlayers={(playersUpdate: { id: number, name: string }[]) => setPlayers(playersUpdate)}
-      />
-    );
-  }, [totalCards, players]);
-
-  const gameArea = useMemo(() => {
-    return (
-      <GameArea
-        numCards={totalCards} 
-        players={players}
-      />
-    )
-  }, [totalCards, players, gameStatus])
-
-  const AppGameStatus: IGameStatusContext = {gameStatus, setGameStatus}
+  const updatePlayers = (updatedPlayersArray: Player[]) => setPlayers(updatedPlayersArray);
 
   return (
-    <GameStatusContext.Provider value={AppGameStatus}>
+    <GameStatusContext.Provider value={GameStatus}>
       <h1 className={`webtitle ${gameStatus !== "define" ? "hide" : ""}`}> EPIC MEMOJY </h1>
-      {optionsMenu}
-      {gameArea}
+      <OptionsMenu totalCards={totalCards} updateTotalCards={updateTotalCards}
+        players={players} updatePlayers={updatePlayers}/>
+      <GameArea numCards={totalCards} players={players}/>
     </GameStatusContext.Provider>
   );
 }

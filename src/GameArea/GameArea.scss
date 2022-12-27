@@ -153,7 +153,6 @@
 		width: 100%;
 		height: 100%;
 		border-radius: 0.5em;
-		background-image: url(../res/card_pattern1.png);
 	}
 
 	&__flipcard {
@@ -319,6 +318,53 @@
 		font-family: $primary-font;
 		font-weight: 700;
 		font-size: 1em;
+	}
+}
+
+.settingsmenu {
+	position:fixed;
+    left: 50%;
+    top: 50%;
+    -ms-transform: translate(-50%,-50%);
+    -moz-transform:translate(-50%,-50%);
+    -webkit-transform: translate(-50%,-50%);
+    transform: translate(-50%,-50%);
+	width: min(96%, 600px);
+	border: 2px solid hsl(100, 56%, 31%);
+	border-radius: min(2.5vw, 15px);
+	background-color: hsl(340, 0%, 30%);
+	display: flex;
+	flex-direction: column;
+	gap: min(2vh, 15px);
+	padding: 2vw;
+	color: hsl(150, 20%, 95%);
+	font-size: clamp(1rem, 4vw, 1.5rem);
+
+	&__resumebutton  {
+		background-color: bisque;
+		padding: 0.3em 2em;
+		border-radius: 100vh;
+		border: none;
+		font-family: $primary-font;
+		font-weight: 700;
+		font-size: 1em;
+	}
+
+	&__cardpatternoptions {
+		width: 100%;
+		display: flex;
+		gap: 10px;
+		justify-content: center;
+		align-items: center;
+	}
+
+	&__cardpatternoption {
+		width: 60px;
+		height: 60px;
+	}
+
+	&__cardpatternoptionactive {
+		border: 4px solid aliceblue;
 	}
 }
 
