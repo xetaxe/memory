@@ -1,4 +1,3 @@
-import { render } from '@testing-library/react';
 import React, {useState, useEffect, createContext, useCallback} from 'react';
 import { JsxElement } from 'typescript';
 import GameArea from './GameArea';
