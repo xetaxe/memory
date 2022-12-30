@@ -1,6 +1,6 @@
 import React, {useCallback, useRef, useContext, useEffect, useMemo, useState} from 'react';
 import './OptionsMenu.scss';
-import { GameStatusContext } from '../App';
+import { GameStatusContext } from '../Local';
 
 const DEFAULT_PLAYERS: Player[] = [
   {"id": 1, "name": "Player 1", score: 0},

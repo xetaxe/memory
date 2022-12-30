@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import './OtherMenus.scss';
-import { GameStatusContext } from '../../App';
+import { GameStatusContext } from '../../Local';
 
 
 function PauseMenu({players}: PauseMenuProps) {

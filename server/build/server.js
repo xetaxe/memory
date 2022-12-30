@@ -11,9 +11,12 @@ const app = (0, express_1.default)();
 const server = http_1.default.createServer(app);
 const io = new socket_io_1.Server(server);
 const PORT = 3000;
+console.log(__dirname);
 app.use((0, cors_1.default)({ origin: 'http://localhost:5173/' }));
-app.get('/', (req, res) => {
-    res.send('Hello World!');
+app.use(express_1.default.static('../client/dist/'));
+app.get('*', (req, res) => {
+    // res.send('Hello World!');
+    res.redirect('/');
 });
 io.on('connection', socket => {
     console.log("eieieieieieiie");

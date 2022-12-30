@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useContext, useMemo, ReactElement} from 'react';
 import './GameArea.scss';
-import { GameStatusContext } from '../App';
+import { GameStatusContext } from '../Local';
 import { PauseMenu, RestartMenu, SettingsMenu, EndMenu } from './OtherMenus/OtherMenus';
 
 const EMOJI_ARRAY: string[] = ["✌","😂","😝","😁","😱","🙌","🍻","🔥","🌈","🌹","😡","🐶","🐬", "👀","🌞","🍎","💝","👌","😍","😉","😓","😳","💪","💩","🎉","🌺","👠","⚾","🏆","👽","💀","🐵","🐮","🐎","💣","👃","🍓","👊","💋","😘","😵","🙏","👋","🚽","💃","💎","🚀","🌙","🎁","⛄","🐰","🐍","🐫","🚲","🍉"]
