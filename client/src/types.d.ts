@@ -1,4 +1,4 @@
-type GameMode = "undecided" | "online" | "local";
+type GameMode = "online" | "local";
 
 type GameStatusContextProps = {
   gameStatus?: string,

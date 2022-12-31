@@ -9,19 +9,25 @@ const socket_io_1 = require("socket.io");
 const cors_1 = __importDefault(require("cors"));
 const app = (0, express_1.default)();
 const server = http_1.default.createServer(app);
-const io = new socket_io_1.Server(server);
+const io = new socket_io_1.Server(server, { path: "/online", transports: ['websocket'] });
+// const io = new Server(server);
 const PORT = 3000;
-console.log(__dirname);
-app.use((0, cors_1.default)({ origin: 'http://localhost:5173/' }));
+// app.use(cors({ origin: 'http://localhost:5173/'}));
+app.use((0, cors_1.default)());
 // app.use(express.static('../client/dist/'));
 app.get('*', (req, res) => {
     res.send('Hello World!');
     // res.redirect('/');
 });
 io.on('connection', socket => {
-    console.log("eieieieieieiie");
-    console.log(socket.id);
+    socket.on("connect_error", (err) => {
+        console.log(`connect_error due to ${err.message}`);
+    });
+    console.log("New user connected: " + socket.id);
+    socket.on('disconnect', () => {
+        console.log("User disconnected: " + socket.id);
+    });
 });
-app.listen(PORT, () => {
+server.listen(PORT, () => {
     console.log(`Example app listening on port ${PORT}`);
 });

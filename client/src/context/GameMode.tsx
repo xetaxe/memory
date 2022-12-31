@@ -8,7 +8,7 @@ type GameModeContextProviderProps = {
 
 const GameModeContextProvider: React.FC<GameModeContextProviderProps> = ({children}) => {
 
-	const [gameMode, setGameMode] = useState<GameMode>("undecided");
+	const [gameMode, setGameMode] = useState<GameMode>("online");
 	const GameModeContextValue = {gameMode, setGameMode}
 
 	return(

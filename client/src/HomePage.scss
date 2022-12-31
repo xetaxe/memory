@@ -1,4 +1,4 @@
-@import "../vars_and_mixins";
+@import "./vars_and_mixins";
 
 .optionsmenu {
 	width: min(96%, 600px);
@@ -13,67 +13,39 @@
 	font-size: clamp(1rem, 4vw, 1.5rem)
 }
 
-.difficultyoptions {
+a {
+	text-decoration: none;
+}
+
+.gamemode {
 	@include typical-flexi;
-	flex-wrap: wrap;
 	flex-direction: row;
+	gap: 20px;
 	
-
-	&__title {
-		width: 100%;
-		justify-content: center;
-	}
-
-	&__selectcontainer {
-		width: 35%;
-	}
-
-	&__selector {
-		width: 100%;
+	&__online, &__local {
+		background-color: hsl(100, 56%, 31%);
+		border: none;
+		text-align: center;
+		border-radius: 8px;
+		color: white;
+		font-size: 1.5rem;
 		@include typical-flexi;
-		justify-content: space-between;
+		flex-direction: column;
+		padding: 0.25em;
+		aspect-ratio: 1 / 1;
+
+		&--highlight {background-color: hsl(100, 56%, 21%);}
 	}
 
-	&__less, &__more  {
-		background-color: transparent;
-		border: none;
-		fill:hsl(340, 0%, 60%);
-		width: clamp(38px, 8vw, 65px);
-		// height: 6px;
-		padding: 0;
-	}
+	&__online_svg, &__local_svg {
+		width: min(150px, 25vw);
+		aspect-ratio: 1 / 1;
 
-	&__more  {
-		transform: rotateY(180deg);
-	}
-
-	&__value {
-		width: 50%;
-		text-align: center;
-		border: none;
-		padding: 5px 0;
-		border-radius: 1vw;
-		background-color: hsl(340, 0%, 40%);
-		font-family: $secondary-font;
-		font-size: 1.15em;
-		color:hsl(150, 20%, 90%);
-		outline: none;
-
-		&:focus, active {
-			border: none;
+		path {
+			fill: white;
 		}
-
-		
 	}
-
-	&__info {
-		width: 65%;
-		text-align: center;
-	}
-
-	&__infopairs {
-		font-size: smaller;
-	}
+	
 }
 
 .playersoptions {

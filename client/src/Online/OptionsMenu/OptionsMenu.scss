@@ -1,0 +1,166 @@
+@import "../../vars_and_mixins";
+
+.optionsmenu {
+	width: min(96%, 600px);
+	border: 2px solid hsl(100, 56%, 31%);
+	border-radius: min(2.5vw, 15px);
+	background-color: hsl(340, 0%, 30%);
+	display: flex;
+	flex-direction: column;
+	gap: min(2vh, 15px);
+	padding: 2vw;
+	color: hsl(150, 20%, 95%);
+	font-size: clamp(1rem, 4vw, 1.5rem)
+}
+
+.difficultyoptions {
+	@include typical-flexi;
+	flex-wrap: wrap;
+	flex-direction: row;
+	
+
+	&__title {
+		width: 100%;
+		justify-content: center;
+	}
+
+	&__selectcontainer {
+		width: 35%;
+	}
+
+	&__selector {
+		width: 100%;
+		@include typical-flexi;
+		justify-content: space-between;
+	}
+
+	&__less, &__more  {
+		background-color: transparent;
+		border: none;
+		fill:hsl(340, 0%, 60%);
+		width: clamp(38px, 8vw, 65px);
+		// height: 6px;
+		padding: 0;
+	}
+
+	&__more  {
+		transform: rotateY(180deg);
+	}
+
+	&__value {
+		width: 50%;
+		text-align: center;
+		border: none;
+		padding: 5px 0;
+		border-radius: 1vw;
+		background-color: hsl(340, 0%, 40%);
+		font-family: $secondary-font;
+		font-size: 1.15em;
+		color:hsl(150, 20%, 90%);
+		outline: none;
+
+		&:focus, active {
+			border: none;
+		}
+
+		
+	}
+
+	&__info {
+		width: 65%;
+		text-align: center;
+	}
+
+	&__infopairs {
+		font-size: smaller;
+	}
+}
+
+.playersoptions {
+	@include typical-flexi;
+	flex-wrap: wrap;
+	flex-direction: row;
+
+	&__title {
+		width: 50%;
+	}
+
+	&__buttons {
+		width: 50%;
+		@include typical-flexi;
+		justify-content: flex-start;
+		gap: 1vw;
+	}
+
+	&__button {
+		border-radius: 4px;
+		border: none;
+		padding: min(1em, 1vh) min(6vw, 33px);
+		font-family: $secondary-font;
+		font-size: 0.8em;
+		font-weight: bold;
+		color:hsl(150, 20%, 95%);
+		background-color: hsl(100, 56%, 31%);
+
+		&--highlight {background-color: hsl(100, 56%, 21%);}
+	}
+
+	&__editlist {
+		font-size: 1rem;
+	}
+
+	&__playerlist {
+		margin-top: min(10px, 1vh);
+		list-style: none;
+		padding: 0 2vw;
+	}
+
+	&__playeritem {
+		display: flex;
+		justify-content: center;
+		font-size: 1.1em;
+		gap: 2vw;
+	}
+
+	&__playerid {
+		width: min(55%, 200px);
+	}
+
+	&__playername {
+		width: 45%;
+	}
+
+	&__playerinput {
+		border: none;
+		background-color: transparent;
+		font-family: $secondary-font;
+		font-size: 1.15em;
+		color:hsl(150, 20%, 90%);
+		outline: none;
+		width: 100%;
+
+		&:focus, active {
+			border: none;
+		}
+
+		
+	}
+
+}
+
+.startbutton {
+	background-color: bisque;
+	padding: 0.3em 2em;
+	border-radius: 100vh;
+	border: none;
+	font-family: $primary-font;
+	font-weight: 700;
+	font-size: 1em;
+}
+
+
+
+///////// SHOW AND HIDE MENU //////////
+.hide {
+	display: none;
+}

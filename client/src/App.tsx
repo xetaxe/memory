@@ -1,8 +1,8 @@
 import { useContext, useState } from 'react';
 import { Routes, Route, Link } from 'react-router-dom';
 import { GameModeContext, GameModeContextProvider } from './context/GameMode';
-import Local from './Local';
-import Online from './Online';
+import Local from './Local/Local';
+import Online from './Online/Online';
 import HomePage from './HomePage';
 
 const App = () => {

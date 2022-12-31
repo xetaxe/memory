@@ -1,4 +1,5 @@
 import React, {useState, useEffect, createContext} from 'react';
+import io from 'socket.io-client';
 import GameArea from './GameArea';
 import OptionsMenu from './OptionsMenu';
 
@@ -6,11 +7,14 @@ const gameStatusArray: string[] = ["define", "play", "pause", "end", "restart", 
 
 export const GameStatusContext = createContext<GameStatusContextProps>({});
 
+const socket = io("http://localhost:3000", {path: "/online", transports: ['websocket']});
+
 const Online: React.FC = () => {
 
   const [totalCards, setTotalCards] = useState(16);
   const [players, setPlayers] = useState<Player[]>([ {"id": 1, "name": "Player 1", score: 0}, 
     {"id": 2, "name": "Player 2", score: 0}]);
+
 
   const [gameStatus, setGameStatus] = useState(gameStatusArray[0]);
   const GameStatus: GameStatusContextProps = {gameStatus, setGameStatus};
@@ -31,12 +35,30 @@ const Online: React.FC = () => {
       updatePlayers(players.map((player) => ({...player, score: 0}))); 
   }, [gameStatus])
 
+
+  useEffect(() => {
+    socket.on('connect', () => {
+      console.log("connected");
+    });
+
+    socket.on('disconnect', () => {
+      console.log("disconnected");
+    });
+
+
+    return () => {
+      socket.off('connect');
+      socket.off('disconnect');
+      socket.off('pong');
+    };
+  }, []);
+
   return (
     <GameStatusContext.Provider value={GameStatus}>
       <h1 className={`webtitle ${gameStatus !== "define" ? "hide" : ""}`}> EPIC MEMOJY </h1>
-      <OptionsMenu totalCards={totalCards} updateTotalCards={updateTotalCards}
+      {/* <OptionsMenu totalCards={totalCards} updateTotalCards={updateTotalCards}
         players={players} updatePlayers={updatePlayers}/>
-      <GameArea numCards={totalCards} players={players} updatePlayers={updatePlayers}/>
+      <GameArea numCards={totalCards} players={players} updatePlayers={updatePlayers}/> */}
     </GameStatusContext.Provider>
   );
 }

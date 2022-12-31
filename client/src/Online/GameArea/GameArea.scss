@@ -1,0 +1,201 @@
+@import "../../vars_and_mixins";
+
+.gamearea {
+	width: 100%;
+	display: flex;
+	flex-direction: column-reverse;
+	@include tablet-landscape-up {
+		flex-direction: row-reverse;
+	}
+	margin: 0 auto;
+	margin-top: 1vw;
+	justify-content: center;
+	align-items: stretch;
+	flex-wrap: wrap;
+}
+
+.infoarea {
+	width: 98%;
+	justify-content: flex-start;
+	@include tablet-landscape-up {
+		width: 24%;
+		max-width: 300px;
+		flex-direction: column;
+		gap: min(7vh, 25px);
+	}
+	@include typical-flexi;
+	flex-wrap: wrap;
+	overflow-y: auto;
+	background-color: $primary-color;
+	border-radius: 2em;
+
+	&__webtitle--reduced {
+		margin: max(6vh, 15px) 0;
+		font-size: 10vw;
+		@include tablet-landscape-up {
+			font-size: min(5vw, 4.5rem);
+		}
+		font-weight: 900;
+		text-align: center;
+		width: 100%;
+		margin: 0 auto;
+		padding-top: min(15px, 3vh);
+	}
+
+	&__turn {
+		width: 35%;
+		@include tablet-landscape-up {
+			width: 100%;
+		}
+		font-size: clamp(1.1rem, 3vw, 2rem);
+		font-weight: 800;
+		text-align: center;
+	}
+
+	&__scores {
+		width: 35%;
+		@include typical-flexi;
+		flex-direction: column;
+		@media (min-width: 460px) {
+			flex-direction: row;
+		}
+		@include tablet-landscape-up {
+			width: 100%;
+			flex-direction: column;
+		}
+		text-align: center;
+		font-size: clamp(1rem, 2vw, 2.5rem);
+		padding: 0.5em;
+	}
+
+	&__scorestitle {
+		font-size: 0.9em;
+		align-self: flex-start;
+		justify-self: end;
+		padding-right: min(2vw, 15px);
+	}
+
+	&__scoreslist {
+		list-style: none;
+		padding: 0;
+	}
+
+	&__buttons {
+		width: 20%;
+		writing-mode: vertical-lr;
+		text-orientation: upright;
+		@media (min-width: 400px) {
+			writing-mode: horizontal-tb;
+			text-orientation: mixed;
+			width: 30%;
+		}
+		@include tablet-landscape-up {
+			width: 100%;
+		}
+		text-align: center;
+	}
+
+	&__pausegame, &__restartgame, &__settings  {
+		background-color: transparent;
+		border: none;
+		fill:hsl(100, 56%, 21%);
+		width: clamp(38px, 8vw, 65px);
+		// height: 6px;
+		padding: 0;
+	}
+
+	&__settings > svg {
+		scale: (0.86);
+	}
+}
+
+.cardsarea {
+	width: 98%;
+	padding: 1rem;
+	@include tablet-landscape-up {
+		width: 74%;
+	}
+	@include typical-flexi;
+	gap: min(6px, 1vw);
+	flex-wrap: wrap;
+	align-content: center;
+	overflow-y: auto;
+	background-color: $primary-color;
+	border-radius: 2em;
+}
+
+.card {
+	width: 23%;
+	//6 cards
+	@media (min-width: 910px) {
+		width: 11.5%;
+	}
+	font-size: 1.5rem;
+	padding: 0;
+	aspect-ratio: 3 / 4;
+	background-color: transparent;
+	perspective: 1000px;
+
+	//Rotating logic
+	&__inner {
+		position: relative;
+		width: 100%;
+		height: 100%;
+		text-align: center;
+		border: 1px solid red;
+		border-radius: 0.5em;
+		transition: transform 0.8s;
+		transform-style: preserve-3d;
+	}
+
+	&__front, &__back {
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		border-radius: 0.5em;
+	}
+
+	&__flipcard {
+		transform: rotateY(180deg);
+	}
+
+	&__front {
+		transform: scaleX(-1);
+	}
+
+	&__back {
+		transform: rotateY(180deg);
+		@include typical-flexi;
+		width: 100%;
+		height: 100%;
+		font-size: clamp(20px, 15vw, 90px);
+		@media (min-width: 910px) {
+			font-size: clamp(60px, 5vw, 90px);
+		}
+		backface-visibility: hidden;
+	}
+}
+
+.cardcontent {
+	@include typical-flexi;
+	width: 100%;
+	height: 100%;
+	font-size: clamp(25px, 3.5em, 60px);
+	// font-size: 100%;
+}
+
+
+//////////// SHOW, HIDE & BLUR MENU //////////////// 
+
+  
+.hide {
+	display: none;
+}
+
+
+.blur {
+	filter: blur(4px);
+	transition: 0.5s filter ease-out;
+	pointer-events: none;
+	user-select: none;
+}

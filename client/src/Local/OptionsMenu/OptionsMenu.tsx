@@ -1,6 +1,7 @@
 import React, {useCallback, useRef, useContext, useEffect, useMemo, useState} from 'react';
 import './OptionsMenu.scss';
 import { GameStatusContext } from '../Local';
+import { Link } from 'react-router-dom';
 
 const DEFAULT_PLAYERS: Player[] = [
   {"id": 1, "name": "Player 1", score: 0},
@@ -100,6 +101,7 @@ export default function OptionsMenu({totalCards, updateTotalCards, players, upda
 
   return (
     <div className={`optionsmenu ${useGameContext.gameStatus !== "define" ? "hide" : ""}`}>
+      <Link to="/"><button>Back</button></Link>
       <div className="difficultyoptions">
         <div className="difficultyoptions__title">
           Choose the number of cards!
