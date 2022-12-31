@@ -13,10 +13,10 @@ const io = new socket_io_1.Server(server);
 const PORT = 3000;
 console.log(__dirname);
 app.use((0, cors_1.default)({ origin: 'http://localhost:5173/' }));
-app.use(express_1.default.static('../client/dist/'));
+// app.use(express.static('../client/dist/'));
 app.get('*', (req, res) => {
-    // res.send('Hello World!');
-    res.redirect('/');
+    res.send('Hello World!');
+    // res.redirect('/');
 });
 io.on('connection', socket => {
     console.log("eieieieieieiie");

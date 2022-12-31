@@ -1,26 +1,22 @@
+import { useContext, useState } from 'react';
 import { Routes, Route, Link } from 'react-router-dom';
+import { GameModeContext, GameModeContextProvider } from './context/GameMode';
 import Local from './Local';
 import Online from './Online';
+import HomePage from './HomePage';
 
 const App = () => {
 
   return (
-    <>    
-    <ul>
-    <li>
-      <Link to="/"><button>Back</button></Link>
-    </li>
-    <li>
-      <Link to="/local">Local</Link>
-    </li>
-    <li>
-      <Link to="/online">Online</Link>
-    </li>
-  </ul>
-    <Routes>
-      <Route path='/local' element={<Local/>}></Route>
-      <Route path='/online' element={<Online/>}></Route>
-    </Routes>
+    <>
+      <GameModeContextProvider>    
+        <Routes>
+          <Route path='/' element={<HomePage/>}></Route>
+          <Route path='/local' element={<Local/>}></Route>
+          <Route path='/online' element={<Online/>}></Route>
+        </Routes>
+      </GameModeContextProvider>
+
     </>
   );
 }

@@ -1,3 +1,5 @@
+type GameMode = "undecided" | "online" | "local";
+
 type GameStatusContextProps = {
   gameStatus?: string,
   setGameStatus?: (value: string) => void;

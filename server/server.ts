@@ -12,11 +12,11 @@ const PORT = 3000
 console.log(__dirname);
 
 app.use(cors({ origin: 'http://localhost:5173/'}));
-app.use(express.static('../client/dist/'));
+// app.use(express.static('../client/dist/'));
 
 app.get('*', (req, res) => {
-  // res.send('Hello World!');
-	res.redirect('/');
+  res.send('Hello World!');
+	// res.redirect('/');
 })
 
 io.on('connection', socket => {
