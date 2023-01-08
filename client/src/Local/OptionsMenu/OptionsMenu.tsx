@@ -101,7 +101,6 @@ export default function OptionsMenu({totalCards, updateTotalCards, players, upda
 
   return (
     <div className={`optionsmenu ${useGameContext.gameStatus !== "define" ? "hide" : ""}`}>
-      <Link to="/"><button>Back</button></Link>
       <div className="difficultyoptions">
         <div className="difficultyoptions__title">
           Choose the number of cards!
@@ -168,7 +167,10 @@ export default function OptionsMenu({totalCards, updateTotalCards, players, upda
             </li>))}
         </ul>
       </div>
-      <button className="startbutton" onClick={e => useGameContext.setGameStatus !== undefined ? useGameContext.setGameStatus("play") : ""}>Start Game!</button>
+      <div className="start_game">
+        <Link to="/"><button className="backbutton">⇦ Back</button></Link>
+        <button className="startbutton" onClick={e => useGameContext.setGameStatus !== undefined ? useGameContext.setGameStatus("play") : ""}>Start Game!</button>
+      </div>
     </div>
   );
 }

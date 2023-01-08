@@ -1,7 +1,7 @@
 @import "./vars_and_mixins";
 
 .optionsmenu {
-	width: min(96%, 600px);
+	width: min(96%, 650px);
 	border: 2px solid hsl(100, 56%, 31%);
 	border-radius: min(2.5vw, 15px);
 	background-color: hsl(340, 0%, 30%);
@@ -20,6 +20,7 @@ a {
 .gamemode {
 	@include typical-flexi;
 	flex-direction: row;
+	flex-wrap: wrap;
 	gap: 20px;
 	
 	&__online, &__local {
@@ -31,21 +32,44 @@ a {
 		font-size: 1.5rem;
 		@include typical-flexi;
 		flex-direction: column;
-		padding: 0.25em;
+		padding-bottom: 1rem;
 		aspect-ratio: 1 / 1;
 
 		&--highlight {background-color: hsl(100, 56%, 21%);}
 	}
 
 	&__online_svg, &__local_svg {
-		width: min(150px, 25vw);
+		width: min(140px, 25vw);
+		padding: 0 1rem;
 		aspect-ratio: 1 / 1;
 
 		path {
 			fill: white;
 		}
 	}
+
+	&_options {
+		flex: 1 1 200px;
+		@include typical-flexi;
+		flex-direction: column;
+		gap: 1.25rem;
+		justify-content: space-between;
+	}
+
+	&_description {
+		font-size: clamp(0.8rem, 4vw, 1.25rem);
+		margin-bottom: 0.5rem;
+	}
 	
+	&_buttons {
+		@include typical-flexi;
+		// flex-direction: column;
+		flex-wrap: wrap;
+	}
+
+	&_buttons > * {
+		margin-bottom: 0.75rem;
+	}
 }
 
 .playersoptions {
@@ -113,21 +137,62 @@ a {
 
 		&:focus, active {
 			border: none;
-		}
-
-		
+		}	
 	}
 
 }
 
-.startbutton {
+.start_game {
+	@include typical-flexi;
+	gap: 1rem;
+	width: 100%;
+	justify-content: center;
+}
+
+.startbutton, .backbutton, .joinroombutton, .createroombutton {
 	background-color: bisque;
-	padding: 0.3em 2em;
+	padding: 0.3em 1em;
 	border-radius: 100vh;
 	border: none;
 	font-family: $primary-font;
 	font-weight: 700;
-	font-size: 1em;
+	font-size: 1.35rem;
+}
+
+.startbutton {
+	background-color: bisque;
+	flex: 1 1 300px;
+}
+
+.backbutton {
+	background-color: hsl(0, 100%, 88%);
+	flex: 0 0 150px;
+	min-width: 100px;
+}
+
+#joinroom {
+	font-size: 1.35rem;
+	padding: 0.1em 0;
+	width: 8.5ch;
+	text-align: center;
+	text-transform: uppercase;
+	font-weight: bold;
+}
+
+.input_playername {
+	width: 100%;
+	text-align: center;
+	margin-bottom: 1.5rem;
+}
+
+#playername {
+	font-size: 1.35rem;
+	text-align: center;
+	max-width: 220px;
+}
+
+#joinroom:active, #joinroom:focus, #playername:active, #playername:focus  {
+	outline: none;
 }
 
 

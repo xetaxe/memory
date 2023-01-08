@@ -6,9 +6,35 @@ import './HomePage.scss';
 
 import io from 'socket.io-client';
 
+const vowels = ["A", "E", "I", "O", "U"];
+const consonants = ["B", "C", "D", "F", "G", "H", "K", "L", "M", "N", "P", "R", "S", "T", "V", "Y", "Z"];
+
+const gameModeDescriptionArray = {
+  local: "Play with your friends in a single computer!",
+  online: "Create or join a room online and play with your friends!"
+}
+const generateRoomCode = (existingRooms : string[] = []): string => {
+
+  let newRoomCode: string = "";
+  let randomVowel: string = "";
+  let randomConsonant: string = "";
+
+  do {
+    for(let i=0; i<3; i++){
+      randomVowel = vowels[Math.floor(Math.random() * vowels.length)];
+      randomConsonant = consonants[Math.floor(Math.random() * consonants.length)];
+      newRoomCode += randomConsonant + randomVowel;
+    }
+  } while (existingRooms.includes(newRoomCode))
+
+  return newRoomCode
+}
+
 const HomePage: React.FC = () => {
 
   const GameMode = useContext(GameModeContext);
+
+  let gameModeDescription = gameModeDescriptionArray[GameMode!.gameMode];
 
   return (
     <>
@@ -18,7 +44,6 @@ const HomePage: React.FC = () => {
           Play online or in your PC:
         </div>
         <div className="gamemode">
-          <Link to="/online">
             <button onClick={e => GameMode?.setGameMode("online")}
             className={`gamemode__online ${GameMode?.gameMode === "online" ? "gamemode__online--highlight" : ""}`}>
               <svg className="gamemode__online_svg" viewBox='0 0 48 48'>
@@ -26,8 +51,6 @@ const HomePage: React.FC = () => {
               </svg>
               <span>ONLINE</span>
             </button>
-          </Link>
-          <Link to="/local">
             <button onClick={e => GameMode?.setGameMode("local")}
             className={`gamemode__online ${GameMode?.gameMode === "local" ? "gamemode__local--highlight" : ""}`}>
               <svg className="gamemode__local_svg" viewBox='0 0 48 48'>
@@ -35,7 +58,27 @@ const HomePage: React.FC = () => {
               </svg>
               <span>LOCAL</span>
             </button>
-          </Link>
+          <div className="gamemode_options">
+            <span className="gamemode_description">{gameModeDescription}</span>
+            <div className={`gamemode_buttons ${GameMode?.gameMode === "online" ? "hide" : ""}`}>
+              <Link to="/local">
+                <button className="startbutton">Play!</button>
+              </Link>
+            </div>
+            <div className={`gamemode_buttons ${GameMode?.gameMode === "local" ? "hide" : ""}`}>
+              <div className="input_playername">
+                <input type="text" name="playername" id="playername" maxLength={15} placeholder="Your name" />
+              </div>
+              <Link to="/online">
+                <button className="createroombutton"> Create Room</button>
+              </Link>
+              <span style={{fontSize: "1.25rem"}}>&nbsp; or &nbsp;</span>
+              <div>              
+                <input type="text" name="joinroom" id="joinroom" maxLength={6} placeholder="Code" /> &ensp;
+                <button className="joinroombutton">Join</button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </>
