@@ -3,6 +3,7 @@ import http from 'http';
 import path from 'path';
 import { Server } from "socket.io";
 import cors from 'cors';
+import generateRoomCode from './utils/generateRoomCode';
 
 const app = express();
 const server = http.createServer(app);
@@ -15,9 +16,19 @@ const PORT = 3000;
 app.use(cors());
 // app.use(express.static('../client/dist/'));
 
-app.get('*', (req, res) => {
+app.get('/', (req, res) => {
   res.send('Hello World!');
 	// res.redirect('/');
+})
+
+app.get('/createroom', (req, res) => {
+	let newRoomCode = generateRoomCode();
+	res.json({code: newRoomCode});
+})
+
+app.get('*', (req, res) => {
+  res.send('Hello World!');
+	res.redirect('/');
 })
 
 

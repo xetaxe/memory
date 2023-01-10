@@ -1,7 +1,7 @@
 @import "./vars_and_mixins";
 
-.optionsmenu {
-	width: min(96%, 650px);
+.options_menu {
+	width: min(96%, 680px);
 	border: 2px solid hsl(100, 56%, 31%);
 	border-radius: min(2.5vw, 15px);
 	background-color: hsl(340, 0%, 30%);
@@ -188,7 +188,7 @@ a {
 #playername {
 	font-size: 1.35rem;
 	text-align: center;
-	max-width: 220px;
+	max-width: 200px;
 }
 
 #joinroom:active, #joinroom:focus, #playername:active, #playername:focus  {

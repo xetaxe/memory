@@ -2,6 +2,7 @@ import React, {useCallback, useRef, useContext, useEffect, useMemo, useState} fr
 import './OptionsMenu.scss';
 import { GameStatusContext } from '../Online';
 import { Link } from 'react-router-dom';
+import { RoomCodeContext } from '../../context/RoomCode';
 
 const DEFAULT_PLAYERS: Player[] = [
   {"id": 1, "name": "Player 1", score: 0},
@@ -15,6 +16,8 @@ export default function OptionsMenu({totalCards, updateTotalCards, players, upda
   
   const myInterval = useRef<any>(undefined);
   const [IncDec, setIncDec] = useState("stopInc");
+
+  const RoomCode = useContext(RoomCodeContext);
   
   const chooseCards = (newTotalCards: any, incrementTotalCards: number) => {
 
@@ -101,7 +104,7 @@ export default function OptionsMenu({totalCards, updateTotalCards, players, upda
 
   return (
     <div className={`optionsmenu ${useGameContext.gameStatus !== "define" ? "hide" : ""}`}>
-      <Link to="/"><button>Back</button></Link>
+      <div className="roomcode">Room Code: &ensp; <span className="code">{RoomCode?.roomCode}</span></div>
       <div className="difficultyoptions">
         <div className="difficultyoptions__title">
           Choose the number of cards!
@@ -138,16 +141,10 @@ export default function OptionsMenu({totalCards, updateTotalCards, players, upda
         </div>
       </div>
       <div className='playersoptions'>
-        <div className='playersoptions__title'>Number of Players:</div>
-        <div className="playersoptions__buttons">
-          <button className={`playersoptions__button ${players.length === 2 ? "playersoptions__button--highlight" : ""}`} onClick={e => updateNumPlayers(players, 2)}>2</button>
-          <button className={`playersoptions__button ${players.length === 3 ? "playersoptions__button--highlight" : ""}`} onClick={e => updateNumPlayers(players, 3)}>3</button>
-          <button className={`playersoptions__button ${players.length === 4 ? "playersoptions__button--highlight" : ""}`} onClick={e => updateNumPlayers(players, 4)}>4</button>
-        </div>
-        <div className="playersoptions__editlist"><br/> Click to edit the names!</div>
+        <div className='playersoptions__title'>Connected players:</div>
         <ul className="playersoptions__playerlist">
           {players.map(player => (<li className="playersoptions__playeritem">
-              <div className="playersoptions__playerid">🧑#{player.id} Name :</div>
+              <div className="playersoptions__player_id">🧑#{player.id} Name {player.id === 1 ? "(Adm)" : ""}:</div>
               <div className="playersoptions__playername"> 
                 <input className="playersoptions__playerinput" type="text" defaultValue= {player.name}
                   onBlur={ e => {
@@ -168,7 +165,9 @@ export default function OptionsMenu({totalCards, updateTotalCards, players, upda
             </li>))}
         </ul>
       </div>
-      <button className="startbutton" onClick={e => useGameContext.setGameStatus !== undefined ? useGameContext.setGameStatus("play") : ""}>Start Game!</button>
-    </div>
+      <div className="start_game">
+        <Link to="/"><button className="backbutton">⇦ Back</button></Link>
+        <button className="startbutton" onClick={e => useGameContext.setGameStatus !== undefined ? useGameContext.setGameStatus("play") : ""}>Start Game!</button>
+      </div>    </div>
   );
 }

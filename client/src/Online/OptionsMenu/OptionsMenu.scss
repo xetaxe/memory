@@ -10,7 +10,7 @@
 	gap: min(2vh, 15px);
 	padding: 2vw;
 	color: hsl(150, 20%, 95%);
-	font-size: clamp(1rem, 4vw, 1.5rem)
+	font-size: clamp(1rem, 4vw, 1.4rem)
 }
 
 .difficultyoptions {
@@ -122,8 +122,8 @@
 		gap: 2vw;
 	}
 
-	&__playerid {
-		width: min(55%, 200px);
+	&__player_id {
+		width: min(55%, 220px);
 	}
 
 	&__playername {
@@ -146,6 +146,18 @@
 		
 	}
 
+}
+
+.roomcode {
+	text-align: center;
+	font-size: smaller;
+	margin-bottom: 1em;
+}
+
+.code {
+	font-size: 2rem;
+	font-weight: bold;
+	color: gold;
 }
 
 .startbutton {

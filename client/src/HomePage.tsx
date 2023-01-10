@@ -1,45 +1,31 @@
 import React, {useState, useEffect, createContext, useCallback, useContext} from 'react';
 import { Link } from 'react-router-dom';
 import { GameModeContext } from './context/GameMode';
+import { RoomCodeContext } from './context/RoomCode';
 
 import './HomePage.scss';
-
-import io from 'socket.io-client';
-
-const vowels = ["A", "E", "I", "O", "U"];
-const consonants = ["B", "C", "D", "F", "G", "H", "K", "L", "M", "N", "P", "R", "S", "T", "V", "Y", "Z"];
 
 const gameModeDescriptionArray = {
   local: "Play with your friends in a single computer!",
   online: "Create or join a room online and play with your friends!"
 }
-const generateRoomCode = (existingRooms : string[] = []): string => {
-
-  let newRoomCode: string = "";
-  let randomVowel: string = "";
-  let randomConsonant: string = "";
-
-  do {
-    for(let i=0; i<3; i++){
-      randomVowel = vowels[Math.floor(Math.random() * vowels.length)];
-      randomConsonant = consonants[Math.floor(Math.random() * consonants.length)];
-      newRoomCode += randomConsonant + randomVowel;
-    }
-  } while (existingRooms.includes(newRoomCode))
-
-  return newRoomCode
-}
 
 const HomePage: React.FC = () => {
 
   const GameMode = useContext(GameModeContext);
+  const RoomCode = useContext(RoomCodeContext);
+
+  //Reset RoomCode when back to Homepage
+  useEffect(() => {
+    RoomCode?.setRoomCode("");
+  }, []);
 
   let gameModeDescription = gameModeDescriptionArray[GameMode!.gameMode];
 
   return (
     <>
       <h1 className="webtitle"> EPIC MEMOJY </h1>
-      <div className="optionsmenu">
+      <div className="options_menu">
       <div className="optionsmenu__title">
           Play online or in your PC:
         </div>
@@ -61,21 +47,23 @@ const HomePage: React.FC = () => {
           <div className="gamemode_options">
             <span className="gamemode_description">{gameModeDescription}</span>
             <div className={`gamemode_buttons ${GameMode?.gameMode === "online" ? "hide" : ""}`}>
-              <Link to="/local">
+              <Link to={"/" + GameMode!.gameMode}>
                 <button className="startbutton">Play!</button>
               </Link>
             </div>
             <div className={`gamemode_buttons ${GameMode?.gameMode === "local" ? "hide" : ""}`}>
               <div className="input_playername">
-                <input type="text" name="playername" id="playername" maxLength={15} placeholder="Your name" />
+                <input type="text" name="playername" id="playername" maxLength={15} placeholder="Your name" required/>
               </div>
-              <Link to="/online">
-                <button className="createroombutton"> Create Room</button>
+              <Link to={"/" + GameMode!.gameMode}>
+                <button className="createroombutton" onClick={() => fetch('http://localhost:3000/createroom').then(res => res.json()).then(data => RoomCode?.setRoomCode(data.code))}> Create Room</button>
               </Link>
               <span style={{fontSize: "1.25rem"}}>&nbsp; or &nbsp;</span>
               <div>              
-                <input type="text" name="joinroom" id="joinroom" maxLength={6} placeholder="Code" /> &ensp;
-                <button className="joinroombutton">Join</button>
+                <input type="text" name="joinroom" id="joinroom" onChange={e => RoomCode?.setRoomCode(e.currentTarget.value.toUpperCase())} maxLength={6} placeholder="Code" /> &nbsp;
+                <Link to={"/" + GameMode!.gameMode}>
+                  <button className="joinroombutton">Join</button>
+                </Link>     
               </div>
             </div>
           </div>

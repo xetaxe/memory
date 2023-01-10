@@ -1,5 +1,5 @@
-import React, {useState, useEffect, createContext} from 'react';
-import io from 'socket.io-client';
+import React, {useState, useEffect, createContext, useRef} from 'react';
+import io, { Manager, Socket } from 'socket.io-client';
 import GameArea from './GameArea';
 import OptionsMenu from './OptionsMenu';
 
@@ -7,9 +7,12 @@ const gameStatusArray: string[] = ["define", "play", "pause", "end", "restart", 
 
 export const GameStatusContext = createContext<GameStatusContextProps>({});
 
-const socket = io("http://localhost:3000", {path: "/online", transports: ['websocket']});
+const manager = new Manager("http://localhost:3000", {path: "/online", transports: ['websocket'], autoConnect: false});
+const socket = manager.socket("");
 
 const Online: React.FC = () => {
+
+  const [roomId, setRoomId] = useState<string>("");
 
   const [totalCards, setTotalCards] = useState(16);
   const [players, setPlayers] = useState<Player[]>([ {"id": 1, "name": "Player 1", score: 0}, 
@@ -29,36 +32,28 @@ const Online: React.FC = () => {
   const updatePlayers = (updatedPlayersArray: Player[]) => setPlayers(updatedPlayersArray);
 
 
-  //Reset scores between games
+  useEffect( () => {
+
+    socket.connect();
+
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
+
+
+  // Reset scores between games
   useEffect(() => {
     if (gameStatus === "define")
       updatePlayers(players.map((player) => ({...player, score: 0}))); 
   }, [gameStatus])
 
-
-  useEffect(() => {
-    socket.on('connect', () => {
-      console.log("connected");
-    });
-
-    socket.on('disconnect', () => {
-      console.log("disconnected");
-    });
-
-
-    return () => {
-      socket.off('connect');
-      socket.off('disconnect');
-      socket.off('pong');
-    };
-  }, []);
-
   return (
     <GameStatusContext.Provider value={GameStatus}>
       <h1 className={`webtitle ${gameStatus !== "define" ? "hide" : ""}`}> EPIC MEMOJY </h1>
-      {/* <OptionsMenu totalCards={totalCards} updateTotalCards={updateTotalCards}
+      <OptionsMenu totalCards={totalCards} updateTotalCards={updateTotalCards}
         players={players} updatePlayers={updatePlayers}/>
-      <GameArea numCards={totalCards} players={players} updatePlayers={updatePlayers}/> */}
+      <GameArea numCards={totalCards} players={players} updatePlayers={updatePlayers}/>
     </GameStatusContext.Provider>
   );
 }
